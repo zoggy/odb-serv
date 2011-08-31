@@ -35,11 +35,17 @@ let rec establish_iterative_server f port =
     Pervasives.flush Pervasives.stderr;
 
     f socket_connection;
-    server () in
+    server ()
+  in
   try server () with
     Unix_error(_,"accept",_) ->
       raise (Failure "establish_iterative_server: accept")
-  | _ ->  raise (Failure "Unexpected Error")
+  | Failure msg ->
+      prerr_endline msg;
+      server ()
+  | e ->
+      prerr_endline (Printexc.to_string e);
+      server ()
 (* /This code *)
 
 let register_server_tool () =

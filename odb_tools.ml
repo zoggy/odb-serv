@@ -37,11 +37,15 @@ exception Unknown_command of string;;
 let mk_tool name commands =
   let execute options phrase =
     let command = Odb_commands.command_of_string phrase in
-    let f =
-      try List.assoc command.(0) commands
-      with Not_found -> raise (Unknown_command command.(0))
-    in
-    f (Array.sub command 1 ((Array.length command) - 1))
+    try
+      let f =
+        try List.assoc command.(0) commands
+        with Not_found -> raise (Unknown_command command.(0))
+      in
+      f (Array.sub command 1 ((Array.length command) - 1))
+    with Unknown_command com ->
+        Odb_comm.mk_response ~tool: name ~code: 1
+        (Printf.sprintf "Unknown command \"%s\" for tool \"%s\"" com name)
   in
   { tool_name = name ;
     tool_execute = execute ;
