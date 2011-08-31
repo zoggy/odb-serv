@@ -9,7 +9,13 @@ OCAMLOPT=ocamlopt
 OCAMLLEX=ocamllex
 OCAMLYACC=ocamlyacc
 CAMLP4O=camlp4o
+OCAMLLIB:=`$(OCAMLC) -where`
+
+INSTALLDIR=$(OCAMLLIB)/odb-server
+
 RM=rm -f
+CP=cp -f
+MKDIR=mkdir -p
 
 SYSLIBS=unix.cmxa dynlink.cmxa
 SYSLIBS_BYTE=unix.cma dynlink.cma
@@ -68,6 +74,11 @@ $(LIB): $(LIB_CMIFILES) $(LIB_CMXFILES)
 $(LIB_BYTE): $(LIB_CMIFILES) $(LIB_CMOFILES)
 	$(OCAMLC) -a -o $@ $(LIB_CMOFILES)
 
+##########
+install:
+	$(MKDIR) $(INSTALLDIR)
+	$(CP) $(LIB_CMIFILES) $(LIB) $(LIB_BYTE) $(LIB:.cmxa=.a) \
+	`ls $(SERVER_CMIFILES) | grep -v server.cmi` $(INSTALLDIR)
 #####
 clean:
 	$(RM) $(SERVER) $(SERVER_BYTE) $(CLIENT) $(CLIENT_BYTE) *.cm* *.o *.a *.x *.annot

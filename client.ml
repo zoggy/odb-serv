@@ -10,9 +10,6 @@ let options = [
     "-h", Arg.Set_string host, "<host> connect to <host> instead of "^ !host ;
   ];;
 
-
-
-
 open Unix;;
 
 (* Code from Didier Remy's course *)
