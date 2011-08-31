@@ -1,0 +1,8 @@
+.chamo*
+*.cm*
+*.o
+*.a
+*.annot
+*.byte
+odb-server
+

@@ -1,7 +1,7 @@
 #
 
 INCLUDES=
-COMPFLAGS=$(INCLUDES)
+COMPFLAGS=$(INCLUDES) -annot
 OCAMLPP=
 
 OCAMLC=ocamlc
@@ -10,7 +10,11 @@ OCAMLLEX=ocamllex
 OCAMLYACC=ocamlyacc
 RM=rm -f
 
-LIB_CMXFILES=commands.cmx \
+SYSLIBS=unix.cmxa dynlink.cmxa
+SYSLIBS_BYTE=unix.cma dynlink.cma
+
+LIB_CMXFILES=misc.cmx \
+	commands.cmx \
 	comm.cmx
 
 LIB_CMOFILES=$(LIB_CMXFILES:.cmx=.cmo)
@@ -19,7 +23,9 @@ LIB_CMIFILES=$(LIB_CMXFILES:.cmx=.cmi)
 LIB=odb.cmxa
 LIB_BYTE=$(LIB:.cmxa=.cma)
 
-SERVER_CMXFILES=server.cmx
+SERVER_CMXFILES=\
+	tools.cmx \
+	server.cmx
 
 SERVER_CMOFILES=$(SERVER_CMXFILES:.cmx=.cmo)
 SERVER_CMIFILES=$(SERVER_CMXFILES:.cmx=.cmi)
@@ -33,10 +39,10 @@ opt: $(LIB) $(SERVER)
 byte: $(LIB_BYTE) $(SERVER_BYTE)
 
 $(SERVER): $(LIB) $(SERVER_CMIFILES) $(SERVER_CMXFILES)
-	$(OCAMLOPT) -o $@ $(COMPFLAGS) $(SERVER_CMXFILES)
+	$(OCAMLOPT) -o $@ $(COMPFLAGS) $(SYSLIBS) $(LIB) $(SERVER_CMXFILES)
 
 $(SERVER_BYTE): $(LIB_BYTE) $(SERVER_CMIFILES) $(SERVER_CMOFILES)
-	$(OCAMLC) -o $@ $(COMPFLAGS) $(SERVER_CMOFILES)
+	$(OCAMLC) -o $@ $(COMPFLAGS) $(SYSLIBS_BYTE) $(LIB_BYTE) $(SERVER_CMOFILES)
 
 $(LIB): $(LIB_CMIFILES) $(LIB_CMXFILES)
 	$(OCAMLOPT) -a -o $@ $(LIB_CMXFILES)
