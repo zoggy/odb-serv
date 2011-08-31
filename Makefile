@@ -11,6 +11,7 @@ OCAMLYACC=ocamlyacc
 CAMLP4O=camlp4o
 OCAMLLIB:=`$(OCAMLC) -where`
 
+
 INSTALLDIR=$(OCAMLLIB)/odb-server
 
 RM=rm -f
@@ -79,6 +80,8 @@ install:
 	$(MKDIR) $(INSTALLDIR)
 	$(CP) $(LIB_CMIFILES) $(LIB) $(LIB_BYTE) $(LIB:.cmxa=.a) \
 	`ls $(SERVER_CMIFILES) | grep -v server.cmi` $(INSTALLDIR)
+	$(CP) $(SERVER) $(CLIENT)  `dirname \`which $(OCAMLC)\``/
+
 #####
 clean:
 	$(RM) $(SERVER) $(SERVER_BYTE) $(CLIENT) $(CLIENT_BYTE) *.cm* *.o *.a *.x *.annot
