@@ -14,10 +14,10 @@ RM=rm -f
 SYSLIBS=unix.cmxa dynlink.cmxa
 SYSLIBS_BYTE=unix.cma dynlink.cma
 
-LIB_CMXFILES=config.cmx \
-	misc.cmx \
-	commands.cmx \
-	comm.cmx
+LIB_CMXFILES=odb_config.cmx \
+	odb_misc.cmx \
+	odb_commands.cmx \
+	odb_comm.cmx
 
 LIB_CMOFILES=$(LIB_CMXFILES:.cmx=.cmo)
 LIB_CMIFILES=$(LIB_CMXFILES:.cmx=.cmi)
@@ -26,7 +26,7 @@ LIB=odb.cmxa
 LIB_BYTE=$(LIB:.cmxa=.cma)
 
 SERVER_CMXFILES=\
-	tools.cmx \
+	odb_tools.cmx \
 	server.cmx
 
 SERVER_CMOFILES=$(SERVER_CMXFILES:.cmx=.cmo)
@@ -100,9 +100,9 @@ clean:
 %.mli %.ml:%.mly
 	$(OCAMLYACC) -v $<
 
-commands.cmo: commands.ml
+odb_commands.cmo: odb_commands.ml
 	$(OCAMLC) $(COMPFLAGS) -c -pp "$(CAMLP4O)" $<
-commands.cmx: commands.ml
+odb_commands.cmx: odb_commands.ml
 	$(OCAMLOPT) $(COMPFLAGS) -c -pp "$(CAMLP4O)" $<
 
 .PHONY: clean depend

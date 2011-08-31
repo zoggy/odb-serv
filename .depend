@@ -1,14 +1,14 @@
-client.cmo: config.cmo comm.cmo
-client.cmx: config.cmx comm.cmx
-comm.cmo: misc.cmo
-comm.cmx: misc.cmx
-commands.cmo: commands.cmi
-commands.cmx: commands.cmi
-config.cmo:
-config.cmx:
-misc.cmo:
-misc.cmx:
-server.cmo: tools.cmo config.cmo comm.cmo
-server.cmx: tools.cmx config.cmx comm.cmx
-tools.cmo: commands.cmi comm.cmo
-tools.cmx: commands.cmx comm.cmx
+client.cmo: odb_config.cmo odb_comm.cmo
+client.cmx: odb_config.cmx odb_comm.cmx
+odb_comm.cmo: odb_misc.cmo
+odb_comm.cmx: odb_misc.cmx
+odb_commands.cmo: odb_commands.cmi
+odb_commands.cmx: odb_commands.cmi
+odb_config.cmo:
+odb_config.cmx:
+odb_misc.cmo:
+odb_misc.cmx:
+odb_tools.cmo: odb_comm.cmo
+odb_tools.cmx: odb_comm.cmx
+server.cmo: odb_tools.cmo odb_config.cmo odb_comm.cmo
+server.cmx: odb_tools.cmx odb_config.cmx odb_comm.cmx

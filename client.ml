@@ -1,6 +1,6 @@
 (** Test client *)
 
-let port = ref Config.default_port ;;
+let port = ref Odb_config.default_port ;;
 let tool = ref "server";;
 let host = ref "localhost";;
 
@@ -56,9 +56,9 @@ let execute_phrase host port tool phrase =
   let socket = connect host port in
   let inch = Unix.in_channel_of_descr socket in
   let ouch = Unix.out_channel_of_descr socket in
-  Comm.output_command ouch (Comm.mk_command ~tool phrase);
-  let resp = Comm.input_response inch in
-  print_endline resp.Comm.resp_contents;
+  Odb_comm.output_command ouch (Odb_comm.mk_command ~tool phrase);
+  let resp = Odb_comm.input_response inch in
+  print_endline resp.Odb_comm.resp_contents;
   Unix.close socket
 ;;
 

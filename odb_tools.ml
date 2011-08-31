@@ -2,7 +2,7 @@
 
 type tool =
   { tool_name : string ;
-    tool_execute : Comm.command_option list -> string -> Comm.response ;
+    tool_execute : Odb_comm.command_option list -> string -> Odb_comm.response ;
   }
 
 let tools = ref [];;
@@ -36,7 +36,7 @@ exception Unknown_command of string;;
 
 let mk_tool name commands =
   let execute options phrase =
-    let command = Commands.command_of_string phrase in
+    let command = Odb_commands.command_of_string phrase in
     let f =
       try List.assoc command.(0) commands
       with Not_found -> raise (Unknown_command command.(0))

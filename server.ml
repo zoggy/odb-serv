@@ -44,32 +44,32 @@ let rec establish_iterative_server f port =
 
 let register_server_tool () =
   let tool = "server" in
-  let tool = Tools.mk_tool tool
-    ["version", (fun _ -> Comm.mk_response ~tool Config.version)]
+  let tool = Odb_tools.mk_tool tool
+    ["version", (fun _ -> Odb_comm.mk_response ~tool Odb_config.version)]
   in
-  Tools.register_tool tool
+  Odb_tools.register_tool tool
 ;;
 
 let handle_request socket =
   let inch = Unix.in_channel_of_descr socket in
   let ouch = Unix.out_channel_of_descr socket in
-  let command = Comm.input_command inch in
+  let command = Odb_comm.input_command inch in
   try
-    let tool = Tools.get_tool command.Comm.com_tool in
-    let response = tool.Tools.tool_execute
-      command.Comm.com_options command.Comm.com_phrase
+    let tool = Odb_tools.get_tool command.Odb_comm.com_tool in
+    let response = tool.Odb_tools.tool_execute
+      command.Odb_comm.com_options command.Odb_comm.com_phrase
     in
-    Comm.output_response ouch response;
+    Odb_comm.output_response ouch response;
     Pervasives.close_out ouch
   with
-    Tools.Unknown_tool name ->
+    Odb_tools.Unknown_tool name ->
       let response =
-        { Comm.resp_tool = name ;
+        { Odb_comm.resp_tool = name ;
           resp_code = 1 ;
           resp_contents = Printf.sprintf "Unregistered tool %s" name ;
         }
       in
-      Comm.output_response ouch response;
+      Odb_comm.output_response ouch response;
       Pervasives.close_out ouch
 ;;
 
@@ -78,7 +78,7 @@ let handle_connection socket =
 ;;
 
 
-let port = ref Config.default_port;;
+let port = ref Odb_config.default_port;;
 
 let options = [
     "-p", Arg.Set_int port, "<port> listen on port instead of "^(string_of_int !port) ;
@@ -93,7 +93,7 @@ let () =
     Arg.parse options (fun s -> tools := s :: !tools) usage;
     let tools = List.rev !tools in
     register_server_tool ();
-    List.iter Tools.load_tool tools;
+    List.iter Odb_tools.load_tool tools;
     ignore(establish_iterative_server handle_request !port)
   with
     Failure s ->

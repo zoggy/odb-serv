@@ -16,7 +16,7 @@ let mk_command ~tool ?(options=[]) phrase =
 let input_command inch =
   try
     let line1 = input_line inch in
-    let line2 = Misc.strip_string (input_line inch) in
+    let line2 = Odb_misc.strip_string (input_line inch) in
     { com_tool = line1 ; com_options = [] ; com_phrase = line2 }
   with
     End_of_file ->
