@@ -8,12 +8,14 @@ OCAMLC=ocamlc
 OCAMLOPT=ocamlopt
 OCAMLLEX=ocamllex
 OCAMLYACC=ocamlyacc
+CAMLP4O=camlp4o
 RM=rm -f
 
 SYSLIBS=unix.cmxa dynlink.cmxa
 SYSLIBS_BYTE=unix.cma dynlink.cma
 
-LIB_CMXFILES=misc.cmx \
+LIB_CMXFILES=config.cmx \
+	misc.cmx \
 	commands.cmx \
 	comm.cmx
 
@@ -82,3 +84,15 @@ clean:
 
 %.mli %.ml:%.mly
 	$(OCAMLYACC) -v $<
+
+commands.cmo: commands.ml
+	$(OCAMLC) $(COMPFLAGS) -c -pp "$(CAMLP4O)" $<
+commands.cmx: commands.ml
+	$(OCAMLOPT) $(COMPFLAGS) -c -pp "$(CAMLP4O)" $<
+
+.PHONY: clean depend
+
+.depend depend:
+	ocamldep -pp $(CAMLP4O) *.ml > .depend
+
+include .depend

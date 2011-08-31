@@ -83,7 +83,7 @@ let () =
     Arg.parse options (fun s -> tools := s :: !tools) usage;
     let tools = List.rev !tools in
     List.iter Tools.load_tool tools;
-    ignore(establish_iterative_server handle_request)
+    ignore(establish_iterative_server handle_request !port)
   with
     Failure s ->
       prerr_endline s;

@@ -32,4 +32,19 @@ let load_tool filename =
       prerr_endline (Dynlink.error_message e)
 ;;
 
-  
+exception Unknown_command of string;;
+
+let mk_tool name commands =
+  let execute options phrase =
+    let command = Commands.command_of_string phrase in
+    let f =
+      try List.assoc command.(0) commands
+      with Not_found -> raise (Unknown_command command.(0))
+    in
+    f (Array.sub command 1 ((Array.length command) - 1))
+  in
+  { tool_name = name ;
+    tool_execute = execute ;
+  }
+;;
+ 

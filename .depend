@@ -1,0 +1,12 @@
+comm.cmo: misc.cmo
+comm.cmx: misc.cmx
+commands.cmo: commands.cmi
+commands.cmx: commands.cmi
+config.cmo:
+config.cmx:
+misc.cmo:
+misc.cmx:
+server.cmo: tools.cmo comm.cmo
+server.cmx: tools.cmx comm.cmx
+tools.cmo: commands.cmi comm.cmo
+tools.cmx: commands.cmx comm.cmx
