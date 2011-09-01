@@ -26,7 +26,9 @@ SYSLIBS_BYTE=unix.cma dynlink.cma
 LIB_CMXFILES=odb_config.cmx \
 	odb_misc.cmx \
 	odb_commands.cmx \
-	odb_comm.cmx
+	odb_comm.cmx \
+	odb_tools.cmx \
+	odb_server.cmx
 
 LIB_CMOFILES=$(LIB_CMXFILES:.cmx=.cmo)
 LIB_CMIFILES=$(LIB_CMXFILES:.cmx=.cmi)
@@ -35,7 +37,6 @@ LIB=odb.cmxa
 LIB_BYTE=$(LIB:.cmxa=.cma)
 
 SERVER_CMXFILES=\
-	odb_tools.cmx \
 	server.cmx
 
 SERVER_CMOFILES=$(SERVER_CMXFILES:.cmx=.cmo)
