@@ -12,6 +12,8 @@ let mk_command ~tool ?(options=[]) phrase =
   { com_tool = tool ; com_options = options ; com_phrase = phrase }
 ;;
 
+exception Error of string;;
+
 (** FIXME: parse tool options *)
 let input_command inch =
   try
@@ -32,7 +34,7 @@ let output_command ouch com =
     com.com_phrase;
     Pervasives.flush ouch
   with
-    _ -> failwith "Could not send command"
+    _ -> raise (Error "Could not send command")
 ;;
 
 type response =
@@ -86,5 +88,5 @@ let output_response ouch resp =
     prerr_endline (Printf.sprintf "response sent: %s" (resp.resp_contents));
     Pervasives.flush ouch
   with
-    _ -> failwith "Could not send response"
+    _ -> raise (Error "Could not send response")
 ;;

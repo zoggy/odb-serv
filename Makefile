@@ -4,7 +4,7 @@ INCLUDES=
 COMPFLAGS=$(INCLUDES) -annot
 OCAMLPP=
 
-OCAMLC=ocamlc
+OCAMLC=ocamlc -g
 OCAMLOPT=ocamlopt
 OCAMLLEX=ocamllex
 OCAMLYACC=ocamlyacc
