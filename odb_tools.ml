@@ -26,6 +26,12 @@ let register_tool tool =
   tools := iter [] !tools
 ;;
 
+(* Hack to force the inclusion of terminfo.o (found in libasmrun.lib).
+  Thanks to Alain Frisch.*)
+external setup : unit -> unit = "caml_terminfo_setup"
+let () = if false then setup ()
+(* /Hack *)
+
 let () = Dynlink.allow_unsafe_modules true;;
 let load_tool filename =
   try Dynlink.loadfile filename
