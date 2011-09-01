@@ -26,6 +26,7 @@ let register_tool tool =
   tools := iter [] !tools
 ;;
 
+let () = Dynlink.allow_unsafe_modules true;;
 let load_tool filename =
   try Dynlink.loadfile filename
   with Dynlink.Error e ->
