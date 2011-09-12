@@ -8,7 +8,19 @@ odb_config.cmo:
 odb_config.cmx:
 odb_misc.cmo:
 odb_misc.cmx:
-odb_tools.cmo: odb_comm.cmo
-odb_tools.cmx: odb_comm.cmx
-server.cmo: odb_tools.cmo odb_config.cmo odb_comm.cmo
-server.cmx: odb_tools.cmx odb_config.cmx odb_comm.cmx
+odb_project.cmo: odb_project_types.cmo odb_project_parser.cmi \
+    odb_project_lexer.cmo
+odb_project.cmx: odb_project_types.cmx odb_project_parser.cmx \
+    odb_project_lexer.cmx
+odb_project_lexer.cmo: odb_project_parser.cmi
+odb_project_lexer.cmx: odb_project_parser.cmx
+odb_project_parser.cmo: odb_project_types.cmo odb_project_parser.cmi
+odb_project_parser.cmx: odb_project_types.cmx odb_project_parser.cmi
+odb_project_types.cmo:
+odb_project_types.cmx:
+odb_server.cmo: odb_tools.cmo odb_config.cmo odb_comm.cmo
+odb_server.cmx: odb_tools.cmx odb_config.cmx odb_comm.cmx
+odb_tools.cmo: odb_commands.cmi odb_comm.cmo
+odb_tools.cmx: odb_commands.cmx odb_comm.cmx
+server.cmo: odb_server.cmo
+server.cmx: odb_server.cmx

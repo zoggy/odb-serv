@@ -1,0 +1,29 @@
+files = "odb_config.ml
+        odb_misc.ml
+        odb_commands.ml
+        odb_comm.ml
+        odb_project.ml
+        odb_tools.ml
+        odb_server.ml
+        server.ml
+        "
+
+$(files) {
+  includes=""
+  compflags="-annot"
+}
+
+odb_commands.ml {
+  compflags+=" -pp camlp4o"
+}
+
+odb_misc.ml {
+  includes="-I foo"
+  includes+=" -I bar"
+  }
+
+odb_project.ml {
+  includes+="-I project"
+  }
+
+

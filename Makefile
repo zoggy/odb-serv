@@ -27,6 +27,10 @@ LIB_CMXFILES=odb_config.cmx \
 	odb_misc.cmx \
 	odb_commands.cmx \
 	odb_comm.cmx \
+	odb_project_types.cmx \
+	odb_project_parser.cmx \
+	odb_project_lexer.cmx \
+	odb_project.cmx \
 	odb_tools.cmx \
 	odb_server.cmx
 
@@ -80,6 +84,9 @@ $(LIB): $(LIB_CMIFILES) $(LIB_CMXFILES)
 $(LIB_BYTE): $(LIB_CMIFILES) $(LIB_CMOFILES)
 	$(OCAMLC) -a -o $@ $(LIB_CMOFILES)
 
+test_odb_project.x: $(LIB) test_odb_project.ml
+	$(OCAMLOPT) -o $@ unix.cmxa str.cmxa $^
+
 ##########
 install:
 	$(MKDIR) $(INSTALLDIR)
@@ -123,6 +130,12 @@ odb_commands.cmo: odb_commands.ml
 	$(OCAMLC) $(COMPFLAGS) -c -pp "$(CAMLP4O)" $<
 odb_commands.cmx: odb_commands.ml
 	$(OCAMLOPT) $(COMPFLAGS) -c -pp "$(CAMLP4O)" $<
+
+odb_project_parser.ml odb_project_parser.mli: odb_project_parser.mly
+	$(OCAMLYACC) $<
+
+odb_project_lexer.ml: odb_project_lexer.mll
+	$(OCAMLLEX) $<
 
 .PHONY: clean depend
 
