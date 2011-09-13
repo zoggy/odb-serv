@@ -32,6 +32,7 @@ LIB_CMXFILES=odb_config.cmx \
 	odb_project_lexer.cmx \
 	odb_project.cmx \
 	odb_tools.cmx \
+	odb_client.cmx \
 	odb_server.cmx
 
 LIB_CMOFILES=$(LIB_CMXFILES:.cmx=.cmo)

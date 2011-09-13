@@ -134,7 +134,11 @@ let com_register_tool socket options args =
        to tool sockets *)
      client_sockets := List.filter ((<>) socket) !client_sockets;
      Odb_tools.register_remote_tool args.(0) socket;
-     None
+     let tools = Odb_tools.Tool_map.fold
+       (fun name _ acc -> name :: acc) !Odb_tools.tools []
+     in
+     let tools = String.concat " " tools in
+     Some (Odb_comm.mk_response ~tool: server_tool tools)
     )
 ;;
 
@@ -189,12 +193,12 @@ let options = [
 
 let usage = Printf.sprintf "Usage: %s [options]\nwhere options are:" Sys.argv.(0);;
 
-let start_server () =
+let start_server ?(with_server_tool=true) () =
   try
     let tools = ref [] in
     Arg.parse options (fun s -> tools := s :: !tools) usage;
     let tools = List.rev !tools in
-    register_server_tool ();
+    if with_server_tool then register_server_tool ();
     List.iter Odb_tools.load_tool tools;
     ignore(establish_iterative_server handle_request !port)
   with

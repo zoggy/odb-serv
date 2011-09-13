@@ -5,15 +5,15 @@ type tool =
     tool_execute : Unix.file_descr -> Odb_comm.command_option list -> string -> Odb_comm.response option;
   }
 
-let tools = ref [];;
 
 module Tool_map = Map.Make (struct type t = string let compare = compare end);;
 module Socket_map = Map.Make (struct type t = Unix.file_descr let compare = compare end);;
+let tools = ref Tool_map.empty;;
 let socket_by_tool = ref Tool_map.empty;;
 let tool_by_socket = ref Socket_map.empty ;;
 
 let remove_tool name =
-  tools := List.filter (fun t -> t.tool_name <> name) !tools;
+  tools := Tool_map.remove name !tools;
   match
     try
       let s = Tool_map.find name !socket_by_tool in
@@ -37,7 +37,7 @@ let add_tool_socket tool socket =
 exception Unknown_tool of string;;
 
 let get_tool name =
-  try List.find (fun t -> t.tool_name = name) !tools
+  try Tool_map.find name !tools
   with Not_found -> raise (Unknown_tool name)
 ;;
 
@@ -47,15 +47,7 @@ let register_tool ?socket tool =
      None -> ()
    | Some s -> add_tool_socket tool s
   );
-  let rec iter acc = function
-    [] -> tool :: acc
-  | t :: q ->
-      if t.tool_name = tool.tool_name then
-        iter acc q
-      else
-        iter (t::acc) q
-  in
-  tools := iter [] !tools
+  tools := Tool_map.add tool.tool_name tool !tools
 ;;
 
 (* Hack to force the inclusion of terminfo.o (found in libasmrun.lib).
@@ -103,6 +95,6 @@ let register_remote_tool name tool_socket =
     None
   in
   let tool = { tool_name = name ; tool_execute = execute } in
+  prerr_endline ("remote tool registered: "^name);
   register_tool ~socket: tool_socket tool;
-
 ;;
