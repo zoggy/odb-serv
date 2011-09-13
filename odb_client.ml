@@ -39,12 +39,12 @@ let connect host port =
       failwith msg
 ;;
 
-let register_to_server tool_name host port =
+let register_to_server tool_name client_port host port =
   let socket = connect host port in
   let ouch = Unix.out_channel_of_descr socket in
   let inch = Unix.in_channel_of_descr socket in
   let com = Odb_comm.mk_command
-    ~tool: "server" (Printf.sprintf "register %s" tool_name)
+    ~tool: "server" (Printf.sprintf "register %s %d" tool_name client_port)
   in
   Odb_comm.output_command ouch com;
   let resp = Odb_comm.input_response inch in

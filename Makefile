@@ -1,7 +1,7 @@
 #
 
-INCLUDES=
-COMPFLAGS=$(INCLUDES) -annot
+INCLUDES=-I +threads
+COMPFLAGS=$(INCLUDES) -annot -thread
 OCAMLPP=
 
 OCAMLC=ocamlc -g
@@ -20,8 +20,8 @@ RM=rm -f
 CP=cp -f
 MKDIR=mkdir -p
 
-SYSLIBS=unix.cmxa dynlink.cmxa
-SYSLIBS_BYTE=unix.cma dynlink.cma
+SYSLIBS=unix.cmxa threads.cmxa dynlink.cmxa
+SYSLIBS_BYTE=unix.cma threads.cma dynlink.cma
 
 LIB_CMXFILES=odb_config.cmx \
 	odb_misc.cmx \
@@ -31,8 +31,8 @@ LIB_CMXFILES=odb_config.cmx \
 	odb_project_parser.cmx \
 	odb_project_lexer.cmx \
 	odb_project.cmx \
-	odb_tools.cmx \
 	odb_client.cmx \
+	odb_tools.cmx \
 	odb_server.cmx
 
 LIB_CMOFILES=$(LIB_CMXFILES:.cmx=.cmo)

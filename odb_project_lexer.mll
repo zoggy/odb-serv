@@ -7,9 +7,9 @@ open Odb_project_parser;;
 let error lexbuf msg =
   let pos = lexbuf.Lexing.lex_curr_p in
   let msg = Printf.sprintf "file %s, line %d, character %d"
-    (Filename.quote lexbuf.lex_start_p.pos_fname)
-    lexbuf.lex_start_p.pos_lnum
-    (lexbuf.lex_start_p.pos_cnum - lexbuf.lex_start_p.pos_bol)
+    (Filename.quote pos.pos_fname)
+    pos.pos_lnum
+    (pos.pos_cnum - pos.pos_bol)
   in
   failwith msg
 ;;

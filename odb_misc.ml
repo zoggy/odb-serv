@@ -1,5 +1,15 @@
 (** *)
 
+(*c==v=[Misc.try_finalize]=1.0====*)
+let try_finalize f x finally y =
+  let res =
+    try f x
+    with exn -> finally y; raise exn
+  in
+  finally y;
+  res
+(*/c==v=[Misc.try_finalize]=1.0====*)
+
 (*c==v=[String.strip_string]=1.0====*)
 let strip_string s =
   let len = String.length s in
@@ -49,3 +59,10 @@ let split_string ?(keep_empty=false) s chars =
   in
   iter "" 0
 (*/c==v=[String.split_string]=1.1====*)
+
+let mtx_protect mtx f s =
+  Mutex.lock mtx;
+  try_finalize f s Mutex.unlock mtx
+;;
+
+
