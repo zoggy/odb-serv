@@ -52,7 +52,7 @@ let rec establish_iterative_server f port =
   server ()
 (* /Didier Remy's *)
 
-let com_register_tool socket options args =
+let com_register_tool options args =
   let (port, resp) =
     if Array.length args <= 0 then
       (None,
@@ -74,7 +74,7 @@ let com_register_tool socket options args =
   in
   match port, resp with
     None, None -> assert false
-  | None, Some resp -> Some resp
+  | None, Some resp -> resp
   | Some port, _ ->
      Odb_tools.register_remote_tool args.(0) port;
      let (tools, _) = Odb_tools.get_tools () in
@@ -82,12 +82,12 @@ let com_register_tool socket options args =
        (fun name _ acc -> name :: acc) tools []
      in
      let tools = String.concat " " tools in
-     Some (Odb_comm.mk_response ~tool: server_tool tools)
+     Odb_comm.mk_response ~tool: server_tool tools
 ;;
 
 let register_server_tool () =
   let tool = Odb_tools.mk_tool server_tool
-    [ "version", (fun _ _ _ -> Some (Odb_comm.mk_response ~tool: server_tool Odb_config.version)) ;
+    [ "version", (fun _ _ -> Odb_comm.mk_response ~tool: server_tool Odb_config.version) ;
       "register", com_register_tool ;
     ]
   in
@@ -104,12 +104,9 @@ let handle_request socket =
           let command = Odb_comm.input_command inch in
           let tool = Odb_tools.get_tool command.Odb_comm.com_tool in
           let response = tool.Odb_tools.tool_execute
-            socket command.Odb_comm.com_options command.Odb_comm.com_phrase
+            command.Odb_comm.com_options command.Odb_comm.com_phrase
           in
-          match response with
-            None -> ()
-          | Some response ->
-              Odb_comm.output_response ouch response;
+          Odb_comm.output_response ouch response;
          with
            Odb_tools.Unknown_tool name ->
              let response =

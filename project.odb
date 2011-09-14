@@ -1,4 +1,4 @@
-files = "odb_config.ml
+srcfiles = "odb_config.ml
         odb_misc.ml
         odb_commands.ml
         odb_comm.ml
@@ -8,8 +8,8 @@ files = "odb_config.ml
         server.ml
         "
 
-$(files) {
-  includes=""
+$(srcfiles) {
+  includes="-I +threads"
   compflags="-annot"
 }
 

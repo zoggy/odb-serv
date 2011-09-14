@@ -14,7 +14,17 @@ let options = [
 
 
 let execute_phrase inch ouch phrase =
-  Odb_comm.output_command ouch (Odb_comm.mk_command ~tool: !tool phrase);
+  let tool_spec = Str.regexp "^\\([a-zA-z_-]+\\):" in
+  let (tool, phrase) =
+    try
+      let p = Str.search_forward tool_spec phrase 0 in
+      let tool = Str.matched_group 1 phrase in
+      let p = p + String.length tool + 1 in
+      (tool, String.sub phrase p (String.length phrase - p))
+    with
+      Not_found -> (!tool, phrase)
+  in
+  Odb_comm.output_command ouch (Odb_comm.mk_command ~tool phrase);
   let resp = Odb_comm.input_response inch in
   print_endline resp.Odb_comm.resp_contents
 ;;

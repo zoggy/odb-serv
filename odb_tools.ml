@@ -2,7 +2,7 @@
 
 type tool =
   { tool_name : string ;
-    tool_execute : Unix.file_descr -> Odb_comm.command_option list -> string -> Odb_comm.response option;
+    tool_execute : Odb_comm.command_option list -> string -> Odb_comm.response ;
   }
 module Tool_map =
   Map.Make (struct type t = string let compare = compare end)
@@ -69,18 +69,17 @@ let load_tool filename =
 exception Unknown_command of string;;
 
 let mk_tool name commands =
-  let execute socket options phrase =
+  let execute options phrase =
     let command = Odb_commands.command_of_string phrase in
     try
       let f =
         try List.assoc command.(0) commands
         with Not_found -> raise (Unknown_command command.(0))
       in
-      f socket options (Array.sub command 1 ((Array.length command) - 1))
+      f options (Array.sub command 1 ((Array.length command) - 1))
     with Unknown_command com ->
-        Some
-        (Odb_comm.mk_response ~tool: name ~code: 1
-         (Printf.sprintf "Unknown command \"%s\" for tool \"%s\"" com name))
+        Odb_comm.mk_response ~tool: name ~code: 1
+        (Printf.sprintf "Unknown command \"%s\" for tool \"%s\"" com name)
   in
   { tool_name = name ;
     tool_execute = execute ;
@@ -88,15 +87,14 @@ let mk_tool name commands =
 ;;
 
 let register_remote_tool name tool_port =
-  let execute client_socket options phrase =
+  let execute options phrase =
     let tool_socket = Odb_client.connect "localhost" tool_port in
     let inch = Unix.in_channel_of_descr tool_socket in
     let ouch = Unix.out_channel_of_descr tool_socket in
     Odb_comm.output_command ouch
     (Odb_comm.mk_command ~tool: name ~options phrase);
     let response = Odb_comm.input_response inch in
-    Odb_comm.output_response (Unix.out_channel_of_descr client_socket) response;
-    None
+    response
   in
   let tool = { tool_name = name ; tool_execute = execute } in
   prerr_endline ("remote tool registered: "^name);
