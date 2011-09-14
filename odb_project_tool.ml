@@ -150,11 +150,19 @@ let com_attribute options args =
           response v
 ;;
 
+let com_project_dir options args =
+  check_nb_args args 1;
+  let file = args.(0) in
+  match project_by_file file with
+    None -> no_project_response file
+  | Some (f,_) -> response (Filename.dirname f)
+;;
 
 let tool = Odb_tools.mk_tool tool_name
   [ "get", com_get_var ;
     "load", com_load_project ;
     "targets", com_targets ;
     "attribute", com_attribute ;
+    "projectdir", com_project_dir ;
   ]
 ;;

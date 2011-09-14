@@ -1,12 +1,19 @@
 srcfiles = "odb_config.ml
-        odb_misc.ml
-        odb_commands.ml
-        odb_comm.ml
-        odb_project.ml
-        odb_tools.ml
-        odb_server.ml
-        server.ml
-        "
+	odb_misc.ml
+	odb_file.ml
+	odb_commands.ml
+	odb_comm.ml
+	odb_project_types.ml
+	odb_project_parser.ml
+	odb_project_lexer.ml
+	odb_project.ml
+	odb_client.ml
+	odb_tools.ml
+	odb_project_tool.ml
+	odb_server.ml
+	client.ml
+	server.ml
+	test_odb_project.ml"
 
 $(srcfiles) {
   includes="-I +threads"
@@ -16,14 +23,5 @@ $(srcfiles) {
 odb_commands.ml {
   compflags+=" -pp camlp4o"
 }
-
-odb_misc.ml {
-  includes="-I foo"
-  includes+=" -I bar"
-  }
-
-odb_project.ml {
-  includes+="-I project"
-  }
 
 

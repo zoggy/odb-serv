@@ -1,3 +1,8 @@
+odb_project_lexer.ml
+odb_project_parser.ml
+odb_project_parser.mli
+*.ouf*
+*.oug
 .chamo*
 *.cm*
 *.o
