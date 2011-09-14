@@ -102,9 +102,10 @@ let handle_request socket =
       begin
         try
           let command = Odb_comm.input_command inch in
-          let tool = Odb_tools.get_tool command.Odb_comm.com_tool in
-          let response = tool.Odb_tools.tool_execute
-            command.Odb_comm.com_options command.Odb_comm.com_phrase
+          let response =
+            Odb_tools.call ~tool: command.Odb_comm.com_tool
+            ~options: command.Odb_comm.com_options
+            command.Odb_comm.com_phrase
           in
           Odb_comm.output_response ouch response;
          with

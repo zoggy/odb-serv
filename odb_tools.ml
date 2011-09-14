@@ -100,3 +100,19 @@ let register_remote_tool name tool_port =
   prerr_endline ("remote tool registered: "^name);
   register_tool ~port: tool_port tool;
 ;;
+
+let call ~tool ?(options=[]) phrase =
+  try
+    let tool = get_tool tool in
+    tool.tool_execute options phrase
+  with
+    Unknown_tool name ->
+      { Odb_comm.resp_tool = name ;
+        resp_code = 1 ;
+        resp_contents = Printf.sprintf "Unregistered tool %s" name ;
+      }
+;;
+
+let call_and_check ~tool ?options phrase =
+  Odb_comm.check_response (call ~tool ?options phrase)
+;;

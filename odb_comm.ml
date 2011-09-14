@@ -90,3 +90,11 @@ let output_response ouch resp =
   with
     _ -> raise (Error "Could not send response")
 ;;
+
+let check_response r =
+  if r.resp_code <> 0 then
+    failwith r.resp_contents
+  else
+    r.resp_contents
+;;
+
