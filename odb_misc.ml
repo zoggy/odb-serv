@@ -65,4 +65,92 @@ let mtx_protect mtx f s =
   try_finalize f s Mutex.unlock mtx
 ;;
 
+type located_message =
+  { mes_start : Lexing.position ;
+    mes_end : Lexing.position ;
+    mes_msg : string ;
+  }
 
+let lexing_pos_of_line_char ?(fname="") s line char =
+  (*prerr_endline (Printf.sprintf "line=%d, char=%d" line char);*)
+  let char = max char 0 in
+  let bol = ref 0 in
+  let cnum = ref 0 in
+  let len = String.length s in
+  let linechar = ref 0 in
+  let rec iter cur_line pos =
+    (*prerr_endline (Printf.sprintf "cur_line=%d, pos=%d, linechar=%d" cur_line pos !linechar);*)
+    if pos >= len then invalid_arg "lexing_pos_of_line_char";
+    if cur_line >= line && !linechar >= char then
+      cnum := pos
+    else
+      (
+       cnum := pos;
+       match s.[pos] with
+        '\n' ->
+           bol := !cnum;
+           linechar := 0;
+           iter (cur_line+1) (pos+1)
+       | _ ->
+           incr linechar;
+           iter cur_line (pos+1)
+      )
+  in
+  iter 0 0;
+  { Lexing.pos_fname = fname ;
+    pos_cnum = !cnum ;
+    pos_bol = !bol ;
+    pos_lnum = line ;
+  }
+;;
+
+let parse_located_messages s =
+  let re_start = Str.regexp
+    "File \"\\([^\"]*\\)\", line \\([0-9]+\\), char \\(-?[0-9]+\\)\\(-[0-9]+\\)?:\n"
+  in
+  let len = String.length s in
+  let rec iter acc cur_opt pos =
+    let p =
+      try Some (Str.search_forward re_start s pos)
+      with Not_found -> None
+    in
+    match p with
+    | None ->
+        begin
+          match cur_opt with
+            None -> List.rev acc
+          | Some lexpos ->
+              let msg = String.sub s pos (len-pos) in (* -1 is for the \n before regexp *)
+              let mes = {
+                  mes_start = lexpos ;
+                  mes_end = lexpos ;
+                  mes_msg = msg ;
+                }
+              in
+              List.rev (mes :: acc)
+        end
+    | Some p ->
+        let (file, line, char) =
+          (Str.matched_group 1 s,
+           int_of_string (Str.matched_group 2 s),
+           int_of_string (Str.matched_group 3 s))
+        in
+        match cur_opt with
+          None ->
+            iter acc
+            (Some (lexing_pos_of_line_char ~fname: file s line char))
+            (p + String.length (Str.matched_string s))
+        | Some lexpos ->
+            let msg = String.sub s pos (p-pos-1) in (* -1 is for the \n before regexp *)
+            let mes = {
+                mes_start = lexpos ;
+                mes_end = lexpos ;
+                mes_msg = msg ;
+              }
+            in
+            let acc = mes :: acc in
+            let cur_opt = Some (lexing_pos_of_line_char ~fname: file s line char) in
+            iter acc cur_opt (p + String.length (Str.matched_string s))
+  in
+  iter [] None 0
+;;

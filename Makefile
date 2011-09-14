@@ -5,14 +5,14 @@ COMPFLAGS=$(INCLUDES) -annot -thread
 OCAMLPP=
 
 OCAMLC=ocamlc -g
-OCAMLOPT=ocamlopt
+OCAMLOPT=ocamlopt -g
 OCAMLLEX=ocamllex
 OCAMLYACC=ocamlyacc
 CAMLP4O=camlp4o
 OCAMLLIB:=`$(OCAMLC) -where`
 
-ADDITIONAL_LIBS=str.cmxa
-ADDITIONAL_LIBS_BYTE=str.cma
+ADDITIONAL_LIBS=
+ADDITIONAL_LIBS_BYTE=
 
 INSTALLDIR=$(OCAMLLIB)/odb-server
 
@@ -20,8 +20,8 @@ RM=rm -f
 CP=cp -f
 MKDIR=mkdir -p
 
-SYSLIBS=unix.cmxa threads.cmxa dynlink.cmxa
-SYSLIBS_BYTE=unix.cma threads.cma dynlink.cma
+SYSLIBS=unix.cmxa threads.cmxa dynlink.cmxa str.cmxa
+SYSLIBS_BYTE=unix.cma threads.cma dynlink.cma str.cma
 
 LIB_CMXFILES=odb_config.cmx \
 	odb_misc.cmx \
@@ -75,10 +75,10 @@ $(SERVER_BYTE): $(LIB_BYTE) $(SERVER_CMIFILES) $(SERVER_CMOFILES)
 	$(ADDITIONAL_LIBS_BYTE) $(LIB_BYTE) $(SERVER_CMOFILES)
 
 $(CLIENT): $(LIB) $(CLIENT_CMIFILES) $(CLIENT_CMXFILES)
-	$(OCAMLOPT) -o $@ $(COMPFLAGS) $(SYSLIBS) str.cmxa $(LIB) $(CLIENT_CMXFILES)
+	$(OCAMLOPT) -o $@ $(COMPFLAGS) $(SYSLIBS) $(LIB) $(CLIENT_CMXFILES)
 
 $(CLIENT_BYTE): $(LIB_BYTE) $(CLIENT_CMIFILES) $(CLIENT_CMOFILES)
-	$(OCAMLC) -o $@ $(COMPFLAGS) $(SYSLIBS_BYTE) str.cma $(LIB_BYTE) $(CLIENT_CMOFILES)
+	$(OCAMLC) -o $@ $(COMPFLAGS) $(SYSLIBS_BYTE) $(LIB_BYTE) $(CLIENT_CMOFILES)
 
 $(LIB): $(LIB_CMIFILES) $(LIB_CMXFILES)
 	$(OCAMLOPT) -a -o $@ $(LIB_CMXFILES)
@@ -88,7 +88,10 @@ $(LIB_BYTE): $(LIB_CMIFILES) $(LIB_CMOFILES)
 	$(OCAMLC) -a -o $@ $(LIB_CMOFILES)
 
 test-odb-project.x: $(LIB) test_odb_project.ml
-	$(OCAMLOPT) -o $@ unix.cmxa str.cmxa $^
+	$(OCAMLOPT) $(COMPFLAGS) $(INCLUDES) -o $@ $(SYSLIBS) $^
+
+test-parse-loc-mes.x: $(LIB) test_parse_loc_mes.ml
+	$(OCAMLOPT) $(COMPFLAGS) $(INCLUDES) -o $@ $(SYSLIBS) $^
 
 ##########
 install:
