@@ -31,3 +31,5 @@ let add_vars env1 vars =
   in
   { env1 with env_vars = v }
 ;;
+
+let get_value env var = SMap.find var env.env_vars ;;

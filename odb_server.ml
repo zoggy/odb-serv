@@ -121,6 +121,14 @@ let handle_request socket =
                ~tool: "?" ~code: 1 msg
              in
              Odb_comm.output_response ouch response
+        | Unix.Unix_error (e, s1, s2) ->
+            let msg = Printf.sprintf "%s: %s %s"
+              (Unix.error_message e) s1 s2
+            in
+            let response = Odb_comm.mk_response
+              ~tool: "?" ~code: 1 msg
+            in
+            Odb_comm.output_response ouch response
         end;
         iter ()
       in
