@@ -138,6 +138,7 @@ let handle_request socket =
   | Odb_comm.Error _msg ->
       Unix.close socket
   | Sys_blocked_io ->
+      prerr_endline "blocked io";
       (try Unix.close socket with _ -> ());
       Thread.exit ()
 ;;

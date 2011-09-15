@@ -9,6 +9,7 @@ odb_project_parser.mli
 *.a
 *.annot
 *.byte
+*.x
 odb-server
 odb-client
 
