@@ -80,11 +80,15 @@ d'autres services de deux façons:
 <ol>
 <li> soit par un plug-in indiqué sur la ligne de commande de lancement du serveur,</li>
 <li> soit par un second serveur se connectant au serveur en lui signifiant qu'il offre un certain service,
-  disons S. Dans ce cas, lorsque le serveur principal recevra une requête (1) concernant le service
+  disons S. Dans ce cas, le serveur principal est un proxy pour le service S:
+  Lorsque le serveur principal recevra une requête (1) concernant le service
   S, il la redirigera vers le second serveur (2) offrant ce service, et la réponse obtenue (3) sera retransmise
   au client (4). La figure suivante illuste ce fonctionnement:
   <br/><br/>
   <img src="2servers.png" width="450" alt="" title="Example with 2 servers"/>
+  <br/>
+  Le second serveur peut lui aussi effectuer des requêtes auprès du serveur principal; il
+  peut par exemple avoir besoin des informations du projet.
 </li>
 </ol>
 </section>

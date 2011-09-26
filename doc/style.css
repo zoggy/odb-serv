@@ -10,6 +10,7 @@ body {
   padding: 0 ;
 
 }
+img { border-width: 0 }
 
 div#page {
   background-color: white;
