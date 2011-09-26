@@ -1,0 +1,91 @@
+html { margin: 0 ; padding: 0 ; height: 100% ; }
+body {
+  font-family: Arial,sans-serif ;
+  font-size: 12pt;
+
+  background: url(gradient.png); background-repeat: repeat-x;
+  background-color: #d9d9d9;
+  height: 100%;
+  margin: 0 ;
+  padding: 0 ;
+
+}
+
+div#page {
+  background-color: white;
+  color: #222222 ;
+  width: 750px;
+  margin-left: auto ;
+  margin-right: auto;
+  padding-left: 1em;
+  padding-right: 1em;
+  /*
+    border-width: 0 5px 0 5px ;
+    border-color: #DDDDDD;
+  */
+  border-width: 0 ;
+  /* border-width: 0 3px 0 0 ;
+     border-color: rgba(50%, 0%, 0%, 10%) ;
+  */
+  border-style: solid ;
+  min-height: 100%;
+  margin-bottom: -1em;;
+  padding-bottom: 30px; ;
+}
+
+div#page-title {
+  font-size: 20pt ;
+  text-align: center ;
+  }
+
+div#content-with-sidebar {
+  padding-left: 170px ;
+}
+
+div#sidebar {
+  position: fixed ;
+  margin-left : auto ;
+  margin-top: auto ;
+  width: 155px;
+  margin-top: 50px;
+  font-size: 10pt;
+  padding-left: 0px;
+}
+div#sidebar ul { padding-left: 0.2em ; }
+
+div.section2 {
+  margin-top: 2em;
+}
+
+div.section2-title {
+  font-size: 12pt ;
+  font-weight: bold;
+  margin-left: -1em;
+  margin-bottom: 0.6em;
+}
+
+div.linkline {
+/*
+  background-color: #CCCCCC ;
+  */
+}
+
+div.linkline a { margin-left: 1em; }
+pre.shell {
+  font-family: courier ;
+  font-size: 10pt;
+  font-weight: bold ;
+  padding-left: 6px;
+  padding-right: 6px;
+  margin-left: 6px;
+  margin-top: 3px;
+  margin-bottom: 3px;
+  border-width: 0 0 0 2px;
+  border-color: black;
+  border-style: solid;
+  }
+span.shell {
+  font-family: courier ;
+  font-size: 10pt;
+  font-weight: bold ;
+  }

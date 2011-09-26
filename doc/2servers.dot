@@ -1,0 +1,9 @@
+digraph g {
+  S1 [ shape="rect", label="Main server\n[\"server\", \"project\"]"] ;
+  S2 [ shape="rect", label="Second server\n[\"S\"]" ] ;
+  C [ shape="rect", label="Client\n(editor or IDE)" ] ;
+  C -> S1 [ label="1" ];
+  S1 -> S2 [ label="2" ];
+  S2 -> S1 [ label="3" ];
+  S1 -> C [ label="4" ];
+  }

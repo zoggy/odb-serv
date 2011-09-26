@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>
+<site>
+<title>Odb-server</title>
+<side>
+<section><page-toc></page-toc></section>
+</side>
+<header>
+<navig/><!-- <lang-switch/>-->
+</header>
+<footer>
+<navig/><!-- <lang-switch/>-->
+</footer>
+<page name="index" sidebar="true" >
+<title>Odb-server</title>
+
+<section name="main:whatis">
+<title><en>What is Odb-server ?</en><fr>Qu'est-ce que Odb-server ?</fr></title>
+<p>
+<en>
+</en>
+<fr>Odb-server fournit un serveur offrant des services à des éditeurs de code et autres
+environnements de développement intégrés (IDE) pour obtenir des informations
+sur le code OCaml édité.
+Une </fr>
+<link href="refdoc/index.html"><fr>bibliothèque</fr></link>
+<fr> est également fournie pour enrichir le serveur afin de fournir
+des services supplémentaires.
+</fr>
+</p>
+<linkline>
+<link href="https://forge.ocamlcore.org/projects/odb-serv/"><en>Project page on OCaml Forge</en><fr>Page du projet sur la forge OCaml</fr></link>
+<link href="http://caml.inria.fr/">Objective-Caml</link>
+<link href="https://github.com/zoggy/odb-serv">Code on Github</link>
+</linkline>
+</section>
+
+<section name="install"><title>Installation</title>
+<p>
+<todo>INSTRUCTIONS ICI</todo>
+</p>
+<p>
+<en>Then, follow the instructions in the </en>
+<fr>Ensuite, suivre les instructions du fichier </fr>
+<tt>INSTALL</tt>
+<en> file coming with the distribution archive.</en>
+<fr> inclus dans l'archive de distribution.</fr>
+</p>
+</section>
+
+<section name="license">
+<title>
+<en>License</en>
+<fr>Licence</fr>
+</title>
+<p>
+<en>Oug is distributed under the LGPL license.</en>
+<fr>Oug est distribué sous licence LGPL.</fr>
+</p>
+</section>
+
+<section name="principle">
+<title>Principes</title>
+<p>
+Il s'agit d'avoir un serveur auquel s'adresse l'éditeur ou l'IDE du développeur (emacs, chamo, vi, ...).
+Chaque service offert possède un nom et comprend chacun un ensemble de commandes.
+</p>
+<p>
+Les commandes sont de la même forme que les commandes shell, c'est-à-dire un nom de commande
+et des arguments, avec des arguments séparés par des blancs et les guillemets et apostrophes pouvant
+être utilisés de la même façon que dans un shell pour spécifier un argument contenant des blancs.
+</p>
+<p>
+La communication avec le serveur se fait par l'intermédiaire d'un socket, et par un
+<local href="protocol">protocole textuel</local>.
+</p>
+<p>
+Le serveur de base offre les services "server" et "project". Cependant, il peut être enrichi
+d'autres services de deux façons:
+</p>
+<ol>
+<li> soit par un plug-in indiqué sur la ligne de commande de lancement du serveur,</li>
+<li> soit par un second serveur se connectant au serveur en lui signifiant qu'il offre un certain service,
+  disons S. Dans ce cas, lorsque le serveur principal recevra une requête (1) concernant le service
+  S, il la redirigera vers le second serveur (2) offrant ce service, et la réponse obtenue (3) sera retransmise
+  au client (4). La figure suivante illuste ce fonctionnement:
+  <br/><br/>
+  <img src="2servers.png" width="450" alt="" title="Example with 2 servers"/>
+</li>
+</ol>
+</section>
+
+<section name="protocol">
+<title><en>Protocol</en><fr>Protocole</fr></title>
+
+</section>
+<section name="author">
+<title><en>Author</en><fr>Auteur</fr></title>
+<p>
+<link href="http://pauillac.inria.fr/~guesdon/">Maxence Guesdon</link>.
+</p>
+</section>
+</page>
+</site>
