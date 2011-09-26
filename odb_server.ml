@@ -109,26 +109,31 @@ let handle_request socket =
             command.Odb_comm.com_phrase
           in
           Odb_comm.output_response ouch response;
-         with
-           Odb_tools.Unknown_tool name ->
-             let response =
-               { Odb_comm.resp_tool = name ;
+        with
+          Odb_tools.Unknown_tool name ->
+            let response =
+              { Odb_comm.resp_tool = name ;
                  resp_code = 1 ;
-                 resp_contents = Printf.sprintf "Unregistered tool %s" name ;
-               }
-             in
-             Odb_comm.output_response ouch response
-         | Failure msg ->
-             let response = Odb_comm.mk_response
-               ~tool: "?" ~code: 1 msg
-             in
-             Odb_comm.output_response ouch response
+                resp_contents = Printf.sprintf "Unregistered tool %s" name ;
+              }
+            in
+            Odb_comm.output_response ouch response
+        | Failure msg ->
+            let response = Odb_comm.mk_response
+              ~tool: "?" ~code: 1 msg
+            in
+            Odb_comm.output_response ouch response
         | Unix.Unix_error (e, s1, s2) ->
             let msg = Printf.sprintf "%s: %s %s"
               (Unix.error_message e) s1 s2
             in
             let response = Odb_comm.mk_response
               ~tool: "?" ~code: 1 msg
+            in
+            Odb_comm.output_response ouch response
+        | e ->
+            let response = Odb_comm.mk_response
+              ~tool: "?" ~code: 1 (Printexc.to_string e)
             in
             Odb_comm.output_response ouch response
         end;
@@ -141,6 +146,13 @@ let handle_request socket =
   | Sys_blocked_io ->
       prerr_endline "blocked io";
       (try Unix.close socket with _ -> ());
+      Thread.exit ()
+  | e ->
+      let msg = Printf.sprintf
+        "Exception raised in thread: %s\nthe thread now exits"
+       (Printexc.to_string e)
+      in
+      prerr_endline msg;
       Thread.exit ()
 ;;
 
