@@ -8,6 +8,8 @@ OCAMLC=ocamlc -g
 OCAMLOPT=ocamlopt -g
 OCAMLLEX=ocamllex
 OCAMLYACC=ocamlyacc
+OCAMLDOC=ocamldoc
+OCAMLDOCOPT=ocamldoc.opt
 CAMLP4O=camlp4o
 OCAMLLIB:=`$(OCAMLC) -where`
 
@@ -103,6 +105,18 @@ install:
 ####
 oug:
 	oug.x -o t.oug $(INCLUDES) -pp "$(CAMLP4O)" odb*.ml *.mli
+####
+	mkdir -p ocamldoc
+	$(OCAMLDOCOPT) -t "Odb-server reference documentation" -d ocamldoc -html -load $<
+
+dump.odoc: odb*.ml odb*.mli
+	$(OCAMLDOCOPT) -rectypes -dump dump.odoc $(INCLUDES) -pp "$(CAMLP4O)" odb*.ml odb*.mli
+
+docdepgraph: dump.odoc
+	mkdir -p ocamldoc
+	$(OCAMLDOCOPT) -t "Odb-server reference documentation" \
+	-g odoc_depgraph.cmxs -width 700 -height 700 -d ocamldoc -load $<
+
 #####
 clean:
 	$(RM) $(SERVER) $(SERVER_BYTE) $(CLIENT) $(CLIENT_BYTE) *.cm* *.o *.a *.x *.annot
