@@ -33,10 +33,11 @@ let rec establish_iterative_server f port =
     prerr_endline "server()";
     begin
       try
-        let socket_connection,client_addr = Unix.accept socket_server in
+        let (socket_connection, client_addr) = Unix.accept socket_server in
+(*
         Unix.setsockopt_float socket_connection SO_RCVTIMEO 10.;
         Unix.setsockopt_float socket_connection SO_SNDTIMEO 10.;
-        Printf.eprintf "Connection from %s.\n" (string_of_sockaddr client_addr);
+*)        Printf.eprintf "Connection from %s.\n" (string_of_sockaddr client_addr);
         Pervasives.flush Pervasives.stderr;
         ignore(Thread.create f socket_connection);
       with

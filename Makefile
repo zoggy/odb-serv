@@ -100,6 +100,9 @@ install:
 	`ls $(SERVER_CMIFILES) | grep -v server.cmi` $(INSTALLDIR)
 	$(CP) $(SERVER) $(CLIENT)  `dirname \`which $(OCAMLC)\``/
 
+####
+oug:
+	oug.x -o t.oug $(INCLUDES) -pp "$(CAMLP4O)" odb*.ml *.mli
 #####
 clean:
 	$(RM) $(SERVER) $(SERVER_BYTE) $(CLIENT) $(CLIENT_BYTE) *.cm* *.o *.a *.x *.annot
