@@ -87,8 +87,18 @@ let mk_tool name commands =
 ;;
 
 let register_remote_tool name tool_port =
+  let sock_mutex = Mutex.create () in
+  let connection = ref None in
+  let get_connection () =
+    match !connection with
+      None ->
+        let tool_socket = Odb_client.connect "localhost" tool_port in
+        connection := Some tool_socket;
+        tool_socket
+    | Some s -> s
+  in
   let execute options phrase =
-    let tool_socket = Odb_client.connect "localhost" tool_port in
+    let tool_socket = get_connection () in
     let inch = Unix.in_channel_of_descr tool_socket in
     let ouch = Unix.out_channel_of_descr tool_socket in
     Odb_comm.output_command ouch
@@ -96,7 +106,11 @@ let register_remote_tool name tool_port =
     let response = Odb_comm.input_response inch in
     response
   in
-  let tool = { tool_name = name ; tool_execute = execute } in
+  let exec options phrase =
+    Odb_misc.mtx_protect sock_mutex
+    (execute options) phrase
+  in
+  let tool = { tool_name = name ; tool_execute = exec } in
   prerr_endline ("remote tool registered: "^name);
   register_tool ~port: tool_port tool;
 ;;
