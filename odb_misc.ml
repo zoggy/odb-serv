@@ -151,7 +151,7 @@ let parse_located_messages s =
           match cur_opt with
             None -> List.rev acc
           | Some lexpos ->
-              let msg = String.sub s pos (len-pos) in (* -1 is for the \n before regexp *)
+              let msg = strip_string (String.sub s pos (len-pos)) in
               let mes = {
                   mes_start = lexpos ;
                   mes_end = lexpos ;
@@ -179,7 +179,7 @@ let parse_located_messages s =
             next_cur_opt
             (p + String.length (Str.matched_string s))
         | Some lexpos ->
-            let msg = String.sub s pos (p-pos-1) in (* -1 is for the \n before regexp *)
+            let msg = strip_string (String.sub s pos (p-pos)) in
             let mes = {
                 mes_start = lexpos ;
                 mes_end = lexpos ;
