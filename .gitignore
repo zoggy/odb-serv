@@ -12,5 +12,12 @@ odb_project_parser.mli
 *.x
 odb-server
 odb-client
+web/website
+web/*servers.png
+*.dot
+*log
+ocamldoc
+dump.odoc
+
 
 
