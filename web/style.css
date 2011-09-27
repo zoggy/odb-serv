@@ -119,3 +119,5 @@ span.todo {
   margin-right: 2em;
   display: block;
   }
+
+tt { font-size: smaller ; }

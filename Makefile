@@ -35,6 +35,7 @@ LIB_CMXFILES=odb_config.cmx \
 	odb_project_lexer.cmx \
 	odb_project.cmx \
 	odb_client.cmx \
+	odb_doc.cmx \
 	odb_tools.cmx \
 	odb_project_tool.cmx \
 	odb_server.cmx

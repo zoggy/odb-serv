@@ -68,7 +68,17 @@ let load_tool filename =
 
 exception Unknown_command of string;;
 
-let mk_tool name commands =
+let mk_tool name ?doc commands =
+  let commands =
+    match doc with
+      None -> commands
+    | Some d ->
+        let f  _ _ =
+          let html = Odb_doc.html_of_tool_doc d in
+          Odb_comm.mk_response ~tool: name html
+        in
+        ("doc", f) :: commands
+  in
   let execute options phrase =
     let command = Odb_commands.command_of_string phrase in
     try

@@ -9,7 +9,8 @@ PNGFILES=2servers.png \
 	4servers.png
 
 XMLFILES=site.xml
-all: $(XMLFILES) $(PNGFILES)
+
+all: $(XMLFILES) $(PNGFILES) $(DEST_DIR)tool_doc.html
 	$(MKDIR) $(DEST_DIR)
 	$(MYSITE) site.xml -lang fr -o $(DEST_DIR) #$(MYSITE) site.xml -lang en -o $(DEST_DIR)
 	$(CP) style.css $(DEST_DIR)
@@ -17,6 +18,12 @@ all: $(XMLFILES) $(PNGFILES)
 	$(CP) img $(DEST_DIR)
 	$(CP) $(DEST_DIR)/index.fr.html $(DEST_DIR)/index.html
 	rpl "&amp;&amp;" "&&" $(DEST_DIR)/*.html
+	(cd .. && make docdepgraph)
+	$(CP) ../ocamldoc $(DEST_DIR)refdoc
+
+$(DEST_DIR)tool_doc.html: ../odb-server
+	bash -c "(../odb-server &  sleep 1 ; ../odb-client \"server: doc\" > $@ ; kill %1)"
+
 
 %.png: %.dot
 	dot -Tpng -o $@ $<

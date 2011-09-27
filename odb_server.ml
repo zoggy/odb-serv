@@ -86,10 +86,49 @@ let com_register_tool options args =
      Odb_comm.mk_response ~tool: server_tool tools
 ;;
 
+let server_doc =
+  let open Odb_doc in
+  { tool_doc = "Server operations" ;
+    tool_coms =
+    [
+      { com_name = "register" ;
+        com_synopsis = "register <tool-name> <port>" ;
+        com_doc = "Register a new tool with given tool-name. The port is used by the server to connect back to the secondary server providing the tool.";
+      } ;
+      { com_name = "version" ;
+        com_synopsis = "version";
+        com_doc = "Return the version number of the server. This function is useful to perform a simple test."
+      } ;
+    ]
+  }
+;;
+
+
+let com_server_doc _ _ =
+  let f tool_name _ acc =
+    if tool_name = server_tool then
+      ("server", Odb_doc.html_of_tool_doc server_doc) :: acc
+    else
+      begin
+        let r = Odb_tools.call ~tool: tool_name "doc" in
+        if r.Odb_comm.resp_code = 0 then
+          (tool_name, r.Odb_comm.resp_contents) :: acc
+        else
+          acc
+      end
+  in
+  let tool_docs =
+    Odb_tools.Tool_map.fold f (fst (Odb_tools.get_tools())) []
+  in
+  let html =Odb_doc.html_page tool_docs in
+  Odb_comm.mk_response ~tool: "server" html
+;;
+
 let register_server_tool () =
   let tool = Odb_tools.mk_tool server_tool
     [ "version", (fun _ _ -> Odb_comm.mk_response ~tool: server_tool Odb_config.version) ;
       "register", com_register_tool ;
+      "doc", com_server_doc ;
     ]
   in
   Odb_tools.register_tool tool

@@ -158,7 +158,41 @@ let com_project_dir options args =
   | Some (f,_) -> response (Filename.dirname f)
 ;;
 
-let tool = Odb_tools.mk_tool tool_name
+let doc =
+  let open Odb_doc in
+  {
+    tool_doc =
+    "Accessing project information, list of source files, compilation flags, ...
+All command takes as first parameter an absolute filename. This filename is
+used to determine which project the command is about, even when the command
+does not concern a specific file like \"targets\"." ;
+    tool_coms =
+    [
+      { com_name = "get" ;
+        com_synopsis = "get <file> <var>" ;
+        com_doc = "Return the contents of the project variable <var>, or empty string if the variable is not defined in the project file.";
+      } ;
+      { com_name = "load" ;
+        com_synopsis = "load <project file>" ;
+        com_doc = "Read the given project file, so that queries about the files under this project can be executed.";
+      } ;
+      { com_name = "targets" ;
+        com_synopsis = "targets <file>" ;
+        com_doc = "Return the list of targets in the project file corresponding to <file>." ;
+      } ;
+      { com_name = "attribute" ;
+        com_synopsis = "attribute <file> <attribute>" ;
+        com_doc = "Return the value of the given attribute for the given target file.";
+      } ;
+      { com_name = "projectdir" ;
+        com_synopsis = "projectdir <file>" ;
+        com_doc = "Return the root directory name of the project corresponding to <file>." ;
+      } ;
+    ];
+  }
+;;
+
+let tool = Odb_tools.mk_tool tool_name ~doc
   [ "get", com_get_var ;
     "load", com_load_project ;
     "targets", com_targets ;

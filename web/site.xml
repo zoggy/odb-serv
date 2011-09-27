@@ -163,12 +163,51 @@ de la manière suivante:
 <p>
 On peut créer un autre serveur, soit pour le lancer en tant que serveur
 principal, soit pour le lancer en tant que serveur secondaire. Dans
-les deux cas, on pourra ajouter un nouvel outil à offrir à l'éditeur client.
+les deux cas, on pourra ajouter un ou plusieurs nouveaux outils
+à offrir à l'éditeur client.
+</p>
+<p>La création d'un nouveau serveur est assez simple, le code
+doit faire les choses suivantes:
+</p>
+<ol>
+<li>Créer un ou plusieurs nouveaux outils (voir le module
+<tt><link href="refdoc/Odb_tools.html">Odb_tools</link></tt>),</li>
+<li>Dans le cas d'un serveur secondaire, enregistrer ce ou ces
+outils auprès du serveur principal, grâce à la fonction
+<tt><link href="refdoc/Odb_client.html#VALregister_to_server">Odb_client.register_to_server</link></tt>,</li>
+<li>Lancer la boucle d'attente des requêtes avec la fonction
+<tt><link href="refdoc/Odb_server.html#VALstart_server">Odb_server.start_server</link></tt>.</li>
+</ol>
+<p>
+Le <link href="http://git.ocamlcore.org/cgi-bin/gitweb.cgi?p=oug/oug.git;a=blob_plain;f=src/oug_server.ml;hb=HEAD">code du serveur de Oug</link> peut servir d'exemple.
 </p>
 </section>
 
-<section name="launching-server2">
-<title>Lancement d'un serveur secondaire</title>
+<section name="available-tools">
+<title>Documentation des outils disponibles</title>
+<p>
+Le serveur Odb-server de base fournit deux outils, "server" et "project".
+</p>
+<p>
+La commande "doc" de l'outil "server" génère une page HTML contenant la
+documentation des commandes disponibles pour chaque outil. Chaque outil
+doit fournir une commande "doc" renvoyant la partie de HTML décrivant ses
+commandes. On utilisera les fonctions du module
+<tt><link href="refdoc/Odb_doc.html">Odb_doc</link></tt> pour générer
+cette documentation au bon format. La commande "doc" de l'outil "server"
+appelle la commande "doc" des autres outils disponibles et aggrège les
+résultats dans une page HTML renvoyée en réponse. On peut voir la
+page pour les outils par défaut <link href="tool_doc.html">ici</link>.
+</p>
+<p>
+Cette page peut être facilment obtenu par la commande suivante, consistant
+à lancer le server et à utiliser le client <tt>odb-client</tt> pour obtenir la
+page de documentation et la rediriger dans un fichier:
+</p>
+<pre class="shell">
+# odb-server &amp;
+# odb-client "server: doc" &gt; foo.html
+</pre>
 </section>
 
 <section name="">
