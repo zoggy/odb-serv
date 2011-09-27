@@ -1,0 +1,11 @@
+graph g {
+  S1 [ shape="rect", label="Main server\n[\"server\", \"project\"]"] ;
+  S2 [ shape="rect", label="Server\n[\"X\"]" ] ;
+  S3 [ shape="rect", label="Server\n[\"Y\", \"Z\"]" ] ;
+  S4 [ shape="rect", label="Server\n[\"T\"]" ] ;
+  C [ shape="rect", label="Client\n(editor or IDE)" ] ;
+  C -- S1 ;
+  S1 -- S2 ;
+  S1 -- S3 ;
+  S1 -- S4 ;
+  }
