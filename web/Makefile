@@ -5,7 +5,8 @@ RSS2CONTENT=/opt/godi/bin/cduce -I /opt/mysite --run rss.cdo --arg
 
 DEST_DIR=website/
 
-PNGFILES=2servers.png
+PNGFILES=2servers.png \
+	4servers.png
 
 XMLFILES=site.xml
 all: $(XMLFILES) $(PNGFILES)
@@ -18,6 +19,8 @@ all: $(XMLFILES) $(PNGFILES)
 	rpl "&amp;&amp;" "&&" $(DEST_DIR)/*.html
 
 %.png: %.dot
+	dot -Tpng -o $@ $<
+%.png: %.dotc
 	circo -Tpng -o $@ $<
 
 clean:

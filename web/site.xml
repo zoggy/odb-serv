@@ -53,8 +53,8 @@ des services supplémentaires.
 <fr>Licence</fr>
 </title>
 <p>
-<en>Oug is distributed under the LGPL license.</en>
-<fr>Oug est distribué sous licence LGPL.</fr>
+<en>Odb-server is distributed under the LGPL license.</en>
+<fr>Odb-server est distribué sous licence LGPL.</fr>
 </p>
 </section>
 
@@ -62,7 +62,7 @@ des services supplémentaires.
 <title>Principes</title>
 <p>
 Il s'agit d'avoir un serveur auquel s'adresse l'éditeur ou l'IDE du développeur (emacs, chamo, vi, ...).
-Chaque service offert possède un nom et comprend chacun un ensemble de commandes.
+Chaque service est composé d'un nom d'outil (une chaîne de caractères) et d'une commande.
 </p>
 <p>
 Les commandes sont de la même forme que les commandes shell, c'est-à-dire un nom de commande
@@ -74,15 +74,16 @@ La communication avec le serveur se fait par l'intermédiaire d'un socket, et par
 <local href="protocol">protocole textuel</local>.
 </p>
 <p>
-Le serveur de base offre les services "server" et "project". Cependant, il peut être enrichi
-d'autres services de deux façons:
+Le serveur de base offre les outils "server" et "project", supportant chacun diverses commandes.
+Cependant, il peut être enrichi d'autres outils de deux façons:
 </p>
 <ol>
 <li> soit par un plug-in indiqué sur la ligne de commande de lancement du serveur,</li>
-<li> soit par un second serveur se connectant au serveur en lui signifiant qu'il offre un certain service,
-  disons S. Dans ce cas, le serveur principal est un proxy pour le service S:
-  Lorsque le serveur principal recevra une requête (1) concernant le service
-  S, il la redirigera vers le second serveur (2) offrant ce service, et la réponse obtenue (3) sera retransmise
+<li> soit par un second serveur se connectant au serveur en lui signifiant qu'il offre un certain outil,
+  disons X. Dans ce cas, le serveur principal est un proxy pour l'outil X:
+  Lorsque le serveur principal recevra une requête (1) concernant l'outil
+  X, il la redirigera vers le second serveur (2) offrant les services de cet outil,
+  et la réponse obtenue (3) sera retransmise
   au client (4). La figure suivante illuste ce fonctionnement:
   <br/><br/>
   <img src="2servers.png" width="450" alt="" title="Example with 2 servers"/>
@@ -91,12 +92,94 @@ d'autres services de deux façons:
   peut par exemple avoir besoin des informations du projet.
 </li>
 </ol>
+<p>
+Un environnement de développement pourrait donc comporter plusieurs outils fournis par
+un serveur principal et différents serveurs secondaires, offrant chacun un ou plusieurs outils.
+L'intérêt étant que l'arrêt ou la charge d'un serveur secondaire ne provoque pas de blocage
+des autres outils.
+</p>
+<p class="center">
+<img src="4servers.png" width="300" alt="" title="Example with 4 servers"/>
+</p>
 </section>
 
 <section name="protocol">
 <title><en>Protocol</en><fr>Protocole</fr></title>
-
+<p>
+Le protocole utilisé pour échanger requêtes et réponses est très simple.
+</p>
+<p>Les requêtes sont de la forme suivante:</p>
+<pre class="protocol">&lt;tool&gt; [options]
+&lt;command&gt;
+</pre>
+<p>
+Par exemple, pour demander le contenu de la variable <tt>includes</tt> pour le fichier
+<tt>/home/foo/test.ml</tt>, le client adressera la requête suivante au serveur,
+concernant l'outil <tt>project</tt>:
+</p>
+<pre class="protocol">project
+attribute "/home/foo/test.ml" includes
+</pre>
+<todo>Le format des options n'est pas encore spécifié.</todo>
+<p>Le format des réponses est aussi simple:</p>
+<pre class="protocol">
+&lt;tool&gt; &lt;code&gt; &lt;len&gt;
+&lt;contents
+eventually on
+more than one line, of length len&gt;
+</pre>
+<p>Voici par exemple la réponse possible à la requête ci-dessus:</p>
+<pre class="protocol">
+project 0 12
+-I +lablgtk2
+</pre>
+<p>
+Le module <tt><link href="refdoc/Odc_comm.html">Odb_comm</link></tt> offre
+des fonctions pour construire, envoyer et recevoir des requêtes et des réponses.
+</p>
 </section>
+
+<section name="launching-server">
+<title>Lancement du serveur principal</title>
+<p>
+Le serveur principal est lancé par la commande
+<tt class="shell">odb-server</tt> (ou <tt class="shell">odb-server.byte</tt>
+pour la version bytecode). Dans la suite, nous parlerons uniquement de la version
+compilée nativement, mais la correspondance des noms de fichiers pour la version
+bytecode est évidente.
+</p>
+<p>Il est possible de charger des greffons au lancement du serveur. Ces greffons
+sont des fichiers objets OCaml. Ainsi, on pourra charger le greffon <tt>foo.cmxs</tt>
+de la manière suivante:
+</p>
+<pre class="shell">
+# odb-server foo.cmxs &amp;
+</pre>
+<p>L'option <tt>-h</tt> donne la liste des options.</p>
+</section>
+
+<section name="creating-server">
+<title>Création d'un autre serveur</title>
+<p>
+On peut créer un autre serveur, soit pour le lancer en tant que serveur
+principal, soit pour le lancer en tant que serveur secondaire. Dans
+les deux cas, on pourra ajouter un nouvel outil à offrir à l'éditeur client.
+</p>
+</section>
+
+<section name="launching-server2">
+<title>Lancement d'un serveur secondaire</title>
+</section>
+
+<section name="">
+<title>t</title>
+</section>
+
+<section name="">
+<title>t</title>
+</section>
+
+
 <section name="author">
 <title><en>Author</en><fr>Auteur</fr></title>
 <p>

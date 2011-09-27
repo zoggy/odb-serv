@@ -8,8 +8,9 @@ body {
   height: 100%;
   margin: 0 ;
   padding: 0 ;
-
+  text-align: justify ;
 }
+
 img { border-width: 0 }
 
 div#page {
@@ -44,6 +45,7 @@ div#content-with-sidebar {
 }
 
 div#sidebar {
+  text-align: left ;
   position: fixed ;
   margin-left : auto ;
   margin-top: auto ;
@@ -84,9 +86,36 @@ pre.shell {
   border-width: 0 0 0 2px;
   border-color: black;
   border-style: solid;
+  background-color:#EEEEEE;
   }
-span.shell {
+pre.protocol {
   font-family: courier ;
   font-size: 10pt;
+  font-weight: bold;
+  padding-left: 6px;
+  padding-right: 6px;
+  margin-left: 6px;
+  margin-top: 3px;
+  margin-bottom: 3px;
+  background-color: #000000 ;
+  color: #EFEFEF ;
+}
+
+tt.shell {
+  font-family: courier ;
+  font-size: 11pt;
   font-weight: bold ;
+  }
+
+p.center {
+  text-align: center ;
+  }
+
+span.todo {
+  border-style: dashed ;
+  border-width: 2px ;
+  border-color: orange ;
+  margin-left: 2em ;
+  margin-right: 2em;
+  display: block;
   }

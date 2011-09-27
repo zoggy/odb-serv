@@ -1,6 +1,6 @@
 digraph g {
   S1 [ shape="rect", label="Main server\n[\"server\", \"project\"]"] ;
-  S2 [ shape="rect", label="Second server\n[\"S\"]" ] ;
+  S2 [ shape="rect", label="Second server\n[\"X\"]" ] ;
   C [ shape="rect", label="Client\n(editor or IDE)" ] ;
   C -> S1 [ label="1" ];
   S1 -> S2 [ label="2" ];
