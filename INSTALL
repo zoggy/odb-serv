@@ -1,0 +1,11 @@
+	Odb-server installation
+
+*** What you need ***
+- OCaml >= 3.12.0
+- make ;-)
+
+*** How to compile ***
+- ./configure
+- make all
+- make install
+

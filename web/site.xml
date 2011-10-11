@@ -36,8 +36,11 @@ des services supplémentaires.
 
 <section name="install"><title>Installation</title>
 <p>
-<todo>INSTRUCTIONS ICI</todo>
+Pour l'instant, Odb-server est téléchargeable en utilisant git:
 </p>
+<pre class="shell">
+# git clone git://github.com/zoggy/odb-serv.git
+</pre>
 <p>
 <en>Then, follow the instructions in the </en>
 <fr>Ensuite, suivre les instructions du fichier </fr>
@@ -45,6 +48,14 @@ des services supplémentaires.
 <en> file coming with the distribution archive.</en>
 <fr> inclus dans l'archive de distribution.</fr>
 </p>
+<p>
+<en>These are are required to compile Odb-server:</en>
+<fr>La compilation de Odb-server requiert:</fr>
+</p>
+<ul>
+<li><link href="http://caml.inria.fr/">OCaml 3.12.0</link><en> or above,</en><fr> ou supérieur,</fr></li>
+<li>make.</li>
+</ul>
 </section>
 
 <section name="license">
@@ -53,8 +64,8 @@ des services supplémentaires.
 <fr>Licence</fr>
 </title>
 <p>
-<en>Odb-server is distributed under the LGPL license.</en>
-<fr>Odb-server est distribué sous licence LGPL.</fr>
+<en>Odb-server is distributed under the GPL license version 2.</en>
+<fr>Odb-server est distribué sous licence GPL version 2.</fr>
 </p>
 </section>
 
@@ -134,7 +145,7 @@ project 0 12
 -I +lablgtk2
 </pre>
 <p>
-Le module <tt><link href="refdoc/Odc_comm.html">Odb_comm</link></tt> offre
+Le module <tt><link href="refdoc/Odb_comm.html">Odb_comm</link></tt> offre
 des fonctions pour construire, envoyer et recevoir des requêtes et des réponses.
 </p>
 </section>
@@ -245,11 +256,6 @@ Le module <tt><link href="refdoc/Odb_tools.html">Odb_tools</link></tt>
 contient la définition des outils, les fonctions d'enregistrement, ...
 </p>
 </section>
-
-<section name="">
-<title>t</title>
-</section>
-
 
 <section name="author">
 <title><en>Author</en><fr>Auteur</fr></title>

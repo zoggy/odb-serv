@@ -4,6 +4,7 @@ MYSITE=/opt/mysite/mysite
 RSS2CONTENT=/opt/godi/bin/cduce -I /opt/mysite --run rss.cdo --arg
 
 DEST_DIR=website/
+REMOTE_DIR=zoggy@odb-serv.forge.ocamlcore.org:/home/groups/odb-serv/htdocs/
 
 PNGFILES=2servers.png \
 	4servers.png
@@ -33,3 +34,6 @@ $(DEST_DIR)tool_doc.html: ../odb-server
 
 clean:
 	rm -fr $(DEST_DIR) $(PNGFILES)
+
+install:
+	scp -r $(DEST_DIR)* $(REMOTE_DIR)

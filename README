@@ -1,0 +1,6 @@
+=== Odb-server ===
+The ocaml development background server should provide a flexible way
+to provide development services to IDEs.
+
+More information on the website:
+  http://odb-serv.forge.ocamlcore.org/
