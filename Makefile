@@ -64,10 +64,14 @@ CLIENT_CMIFILES=$(CLIENT_CMXFILES:.cmx=.cmi)
 CLIENT=odb-client
 CLIENT_BYTE=odb-client.byte
 
-all: opt byte
+PLUGINS=plugins/ocamlwc.cmxs
+PLUGINS_BYTE=$(PLUGINS:.cmxs=.cmo)
+
+all: opt byte plugins
 
 opt: $(LIB) $(SERVER) $(CLIENT)
 byte: $(LIB_BYTE) $(SERVER_BYTE) $(CLIENT_BYTE)
+plugins: $(PLUGINS)
 
 $(SERVER): $(LIB) $(SERVER_CMIFILES) $(SERVER_CMXFILES)
 	$(OCAMLOPT) -verbose -linkall -o $@ $(COMPFLAGS) $(SYSLIBS) \
@@ -123,7 +127,7 @@ clean:
 	$(RM) $(SERVER) $(SERVER_BYTE) $(CLIENT) $(CLIENT_BYTE) *.cm* *.o *.a *.x *.annot
 
 #############
-.SUFFIXES: .mli .ml .cmi .cmo .cmx .mll .mly
+.SUFFIXES: .mli .ml .cmi .cmo .cmx .cmxs .mll .mly
 
 %.cmi:%.mli
 	$(OCAMLC) $(OCAMLPP) $(COMPFLAGS) -c $<
@@ -140,6 +144,9 @@ clean:
 
 %.cmx %.o:%.ml
 	$(OCAMLOPT) $(OCAMLPP) $(COMPFLAGS) -c $<
+
+%.cmxs: %.ml
+	$(OCAMLOPT) -shared -o $@ $(OCAMLPP) $(COMPFLAGS) $<
 
 %.o: %.c
 	$(OCAMLOPT) $(COMPFLAGS) -c $< && $(MV) `basename $@` `dirname $@`

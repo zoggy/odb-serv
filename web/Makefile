@@ -18,6 +18,7 @@ all: $(XMLFILES) $(PNGFILES) $(DEST_DIR)tool_doc.html
 	$(CP) img $(DEST_DIR)
 	$(CP) $(DEST_DIR)/index.fr.html $(DEST_DIR)/index.html
 	rpl "&amp;&amp;" "&&" $(DEST_DIR)/*.html
+	highlight -S ocaml ../plugins/ocamlwc.ml  > $(DEST_DIR)ocamlwc.html --inline-css -s bright
 	(cd .. && make docdepgraph)
 	$(CP) ../ocamldoc/* $(DEST_DIR)refdoc/
 

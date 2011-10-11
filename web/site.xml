@@ -170,8 +170,8 @@ les deux cas, on pourra ajouter un ou plusieurs nouveaux outils
 doit faire les choses suivantes:
 </p>
 <ol>
-<li>Créer un ou plusieurs nouveaux outils (voir le module
-<tt><link href="refdoc/Odb_tools.html">Odb_tools</link></tt>),</li>
+<li>Créer un ou plusieurs nouveaux outils (voir <local href="tool-creation">la
+section à ce sujet</local>),</li>
 <li>Dans le cas d'un serveur secondaire, enregistrer ce ou ces
 outils auprès du serveur principal, grâce à la fonction
 <tt><link href="refdoc/Odb_client.html#VALregister_to_server">Odb_client.register_to_server</link></tt>,</li>
@@ -212,7 +212,38 @@ page de documentation et la rediriger dans un fichier:
 
 <section name="tool-creation">
 <title>Création d'un outil</title>
-
+<!--The distribution includes a toy tool called "ocamlwc" usable as a starting base
+to create your own tools.-->
+<p>
+La distribution inclus un outil jouet comme base à partir de laquelle on
+peut développer ses propres outils.
+</p>
+<p>Le code est <a href="ocamlwc.html">ici</a>.</p>
+<p>Pour compiler:
+</p>
+<pre class="shell">
+# ocamlopt -g -shared -o ocamlwc.cmxs -thread ocamlwc.ml
+</pre>
+<p>Pour tester, on lance le serveur en lui donnant le greffon à charger
+sur la ligne de commande:</p>
+<pre class="shell">
+# odb-server ocamlwc.cmxs &amp;
+</pre>
+<p>Pour tester, on peut utiliser le client de test. La première
+commande appelle la commande "comments" de l'outil "ocamlwc" sur le
+fichier "ocamlwc.ml". La seconde fait générer la documentation des outils
+disponibles:
+</p>
+<pre class="shell">
+# ./odb-client "ocamlwc: comments ocamlwc.ml"
+response header: ocamlwc 0 1
+8
+# ./odb-client "server: doc" > /tmp/t.html
+</pre>
+<p>
+Le module <tt><link href="refdoc/Odb_tools.html">Odb_tools</link></tt>
+contient la définition des outils, les fonctions d'enregistrement, ...
+</p>
 </section>
 
 <section name="">
