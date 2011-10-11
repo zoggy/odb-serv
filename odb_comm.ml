@@ -3,9 +3,9 @@
 type command_option = string * string;;
 
 type command =
-  { com_tool : string ; (** name of plugin, or "server", or "project", ... *)
-    com_options : command_option list ; (** eventually options for the tool *)
-    com_phrase : string ; (** the command to be executed by the tool *)
+  { com_tool : string ;
+    com_options : command_option list ;
+    com_phrase : string ;
   }
 
 let mk_command ~tool ?(options=[]) phrase =
