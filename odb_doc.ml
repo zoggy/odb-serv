@@ -1,4 +1,4 @@
-(** Documenting tools. *)
+(** *)
 
 type command_doc =
   { com_name : string ;

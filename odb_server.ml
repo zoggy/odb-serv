@@ -5,11 +5,6 @@ open Unix;;
 let server_tool = "server" ;;
 
 (* Most of this code from Didier Remy's course *)
-let try_finalize f x finally y =
-  let res = try f x with exn -> finally y; raise exn in
-  finally y;
-  res;;
-
 let open_server port =
   try
     let socket = Unix.socket PF_INET SOCK_STREAM 0 in

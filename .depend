@@ -1,19 +1,19 @@
-client.cmo: odb_config.cmo odb_comm.cmo odb_client.cmo
+client.cmo: odb_config.cmi odb_comm.cmi odb_client.cmi
 client.cmx: odb_config.cmx odb_comm.cmx odb_client.cmx
-odb_client.cmo: odb_misc.cmo odb_comm.cmo
-odb_client.cmx: odb_misc.cmx odb_comm.cmx
-odb_comm.cmo: odb_misc.cmo
-odb_comm.cmx: odb_misc.cmx
+odb_client.cmo: odb_misc.cmi odb_comm.cmi odb_client.cmi
+odb_client.cmx: odb_misc.cmx odb_comm.cmx odb_client.cmi
+odb_comm.cmo: odb_misc.cmi odb_comm.cmi
+odb_comm.cmx: odb_misc.cmx odb_comm.cmi
 odb_commands.cmo: odb_commands.cmi
 odb_commands.cmx: odb_commands.cmi
-odb_config.cmo:
-odb_config.cmx:
-odb_doc.cmo:
-odb_doc.cmx:
-odb_file.cmo: odb_misc.cmo
-odb_file.cmx: odb_misc.cmx
-odb_misc.cmo:
-odb_misc.cmx:
+odb_config.cmo: odb_config.cmi
+odb_config.cmx: odb_config.cmi
+odb_doc.cmo: odb_doc.cmi
+odb_doc.cmx: odb_doc.cmi
+odb_file.cmo: odb_misc.cmi odb_file.cmi
+odb_file.cmx: odb_misc.cmx odb_file.cmi
+odb_misc.cmo: odb_misc.cmi
+odb_misc.cmx: odb_misc.cmi
 odb_project.cmo: odb_project_types.cmo odb_project_parser.cmi \
     odb_project_lexer.cmo
 odb_project.cmx: odb_project_types.cmx odb_project_parser.cmx \
@@ -22,21 +22,23 @@ odb_project_lexer.cmo: odb_project_parser.cmi
 odb_project_lexer.cmx: odb_project_parser.cmx
 odb_project_parser.cmo: odb_project_types.cmo odb_project_parser.cmi
 odb_project_parser.cmx: odb_project_types.cmx odb_project_parser.cmi
-odb_project_tool.cmo: odb_tools.cmo odb_project_types.cmo odb_project.cmo \
-    odb_misc.cmo odb_file.cmo odb_comm.cmo
+odb_project_tool.cmo: odb_tools.cmi odb_project_types.cmo odb_project.cmo \
+    odb_misc.cmi odb_file.cmi odb_doc.cmi odb_comm.cmi odb_project_tool.cmi
 odb_project_tool.cmx: odb_tools.cmx odb_project_types.cmx odb_project.cmx \
-    odb_misc.cmx odb_file.cmx odb_comm.cmx
+    odb_misc.cmx odb_file.cmx odb_doc.cmx odb_comm.cmx odb_project_tool.cmi
 odb_project_types.cmo:
 odb_project_types.cmx:
-odb_server.cmo: odb_tools.cmo odb_doc.cmo odb_config.cmo odb_comm.cmo
-odb_server.cmx: odb_tools.cmx odb_doc.cmx odb_config.cmx odb_comm.cmx
-odb_tools.cmo: odb_misc.cmo odb_doc.cmo odb_commands.cmi odb_comm.cmo \
-    odb_client.cmo
+odb_server.cmo: odb_tools.cmi odb_doc.cmi odb_config.cmi odb_comm.cmi \
+    odb_server.cmi
+odb_server.cmx: odb_tools.cmx odb_doc.cmx odb_config.cmx odb_comm.cmx \
+    odb_server.cmi
+odb_tools.cmo: odb_misc.cmi odb_doc.cmi odb_commands.cmi odb_comm.cmi \
+    odb_client.cmi odb_tools.cmi
 odb_tools.cmx: odb_misc.cmx odb_doc.cmx odb_commands.cmx odb_comm.cmx \
-    odb_client.cmx
-server.cmo: odb_tools.cmo odb_server.cmo odb_project_tool.cmo
+    odb_client.cmx odb_tools.cmi
+server.cmo: odb_tools.cmi odb_server.cmi odb_project_tool.cmi
 server.cmx: odb_tools.cmx odb_server.cmx odb_project_tool.cmx
 test_odb_project.cmo: odb_project.cmo
 test_odb_project.cmx: odb_project.cmx
-test_parse_loc_mes.cmo: odb_misc.cmo
+test_parse_loc_mes.cmo: odb_misc.cmi
 test_parse_loc_mes.cmx: odb_misc.cmx
