@@ -1,7 +1,6 @@
 html { margin: 0 ; padding: 0 ; height: 100% ; }
 body {
-  font-family: Arial,sans-serif ;
-  font-size: 12pt;
+  font: normal normal 14px Arial, Tahoma, Helvetica, FreeSans, sans-serif;
 
   background: url(gradient.png); background-repeat: repeat-x;
   background-color: #d9d9d9;
@@ -64,6 +63,17 @@ div.section2-title {
   font-size: 12pt ;
   font-weight: bold;
   margin-left: -1em;
+  margin-bottom: 0.6em;
+}
+
+div.section3 {
+  margin-top: 2em;
+}
+
+div.section3-title {
+  font-size: 11pt ;
+  font-weight: bold;
+  margin-left: 0em ;
   margin-bottom: 0.6em;
 }
 

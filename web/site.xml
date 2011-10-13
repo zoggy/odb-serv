@@ -219,6 +219,14 @@ page de documentation et la rediriger dans un fichier:
 # odb-server &amp;
 # odb-client "server: doc" &gt; foo.html
 </pre>
+<section name="tools:project">
+<title>L'outil "project"</title>
+<p>
+L'outil "project" utilise un fichier de description de projet pour
+connaître les fichiers sources et les options de compilation associées.
+Un exemple d'un tel fichier se trouve <a href="project.txt">ici</a>.
+</p>
+</section>
 </section>
 
 <section name="tool-creation">

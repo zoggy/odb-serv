@@ -52,6 +52,8 @@ all: $(XMLFILES) $(PNGFILES) $(DEST_DIR)tool_doc.html
 	highlight -S ocaml ../plugins/ocamlwc.ml  > $(DEST_DIR)ocamlwc.html --inline-css -s bright
 	(cd .. && make docdepgraph)
 	$(CP) ../ocamldoc/* $(DEST_DIR)refdoc/
+	$(CP) ../project.odb $(DEST_DIR)project.txt
+
 
 $(DEST_DIR)tool_doc.html: ../odb-server
 	bash -c "(../odb-server &  sleep 1 ; ../odb-client \"server: doc\" > $@ ; kill %1)"
