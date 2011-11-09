@@ -5,10 +5,10 @@
 <section><page-toc></page-toc></section>
 </side>
 <header>
-<navig/><!-- <lang-switch/>-->
+<navig/><lang-switch/>
 </header>
 <footer>
-<navig/><!-- <lang-switch/>-->
+<navig/><lang-switch/>
 </footer>
 <page name="index" sidebar="true" >
 <title>Odb-server</title>
@@ -16,21 +16,30 @@
 <section name="main:whatis">
 <title><en>What is Odb-server ?</en><fr>Qu'est-ce que Odb-server ?</fr></title>
 <p>
-<en>
+<en>Odb-server offers services to code editors and integrated development environments
+(IDEs) to get information about OCaml code being edited. In fact, Odb-server can
+be used to provide any service, but it was developped originally to make
 </en>
 <fr>Odb-server fournit un serveur offrant des services à des éditeurs de code et autres
 environnements de développement intégrés (IDE) pour obtenir des informations
-sur le code OCaml édité.
-Une </fr>
-<link href="refdoc/index.html"><fr>bibliothèque</fr></link>
+sur le code OCaml édité. En fait, Odb-server peut être utilisé pour fournir
+n'importe quel service, mais il a été développé à l'origine pour permettre
+à </fr>
+<link href="http://oug.forge.ocamlcore.org/">Oug</link>
+<en> able to provide services to code editors.</en>
+<fr> de fournir des services à des éditeurs de code.</fr>
+<en> A </en>
+<fr> Une </fr>
+<link href="refdoc/index.html"><en>library</en><fr>bibliothèque</fr></link>
+<en> is also included to add services to the server.</en>
 <fr> est également fournie pour enrichir le serveur afin de fournir
 des services supplémentaires.
 </fr>
 </p>
 <linkline>
 <link href="https://forge.ocamlcore.org/projects/odb-serv/"><en>Project page on OCaml Forge</en><fr>Page du projet sur la forge OCaml</fr></link>
-<link href="http://caml.inria.fr/">Objective-Caml</link>
 <link href="https://github.com/zoggy/odb-serv">Code on Github</link>
+<link href="http://caml.inria.fr/">Objective-Caml</link>
 </linkline>
 </section>
 

@@ -223,6 +223,8 @@ let handle_request socket =
 let port = ref Odb_config.default_port;;
 
 let options = [
+    "--version", Arg.Unit (fun () -> print_endline Odb_config.version; exit 0),
+    " print version and exits";
     "-p", Arg.Set_int port, "<port> listen on port instead of "^(string_of_int !port) ;
 
   ];;
