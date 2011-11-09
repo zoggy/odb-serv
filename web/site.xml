@@ -37,23 +37,43 @@ des services supplémentaires.
 </fr>
 </p>
 <linkline>
-<link href="https://forge.ocamlcore.org/projects/odb-serv/"><en>Project page on OCaml Forge</en><fr>Page du projet sur la forge OCaml</fr></link>
+<link href="https://forge.ocamlcore.org/projects/odb-serv/">
+<en>Project page on OCaml Forge</en><fr>Page du projet sur la forge OCaml</fr></link>
 <link href="https://github.com/zoggy/odb-serv">Code on Github</link>
 <link href="http://caml.inria.fr/">Objective-Caml</link>
 </linkline>
 </section>
 
-<section name="install"><title>Installation</title>
+<section name="download"><title>
+<en>Download and install</en><fr>Téléchargement et installation</fr>
+</title>
 <p>
-Pour l'instant, Odb-server est téléchargeable en utilisant git:
+<en>Odb-server is </en>
+<fr>Odb-server est </fr>
+<link href="http://forge.ocamlcore.org/frs/?group_id=276"><en>downloadable here</en>
+<fr>téléchargeable ici</fr></link>.
+</p>
+<p>
+<en>You can also access the </en>
+<fr>Vous pouvez aussi accéder au </fr>
+<link href="https://github.com/zoggy/odb-serv"><en>Git repository</en>
+<fr>Dépôt Git</fr></link>:
 </p>
 <pre class="shell">
 # git clone git://github.com/zoggy/odb-serv.git
 </pre>
 <p>
-<en>Then, follow the instructions in the </en>
-<fr>Ensuite, suivre les instructions du fichier </fr>
-<tt>INSTALL</tt>
+<en>Latest release is </en>
+<fr>La dernière version est </fr>
+<link href="http://forge.ocamlcore.org/frs/download.php/">0.1</link> (2011-11-09).
+</p>
+<p>
+<en>First release.</en><fr>Première distribution.</fr>
+</p>
+<p>
+<en>To install, follow the instructions in the </en>
+<fr>Pour installer, suivre les instructions du fichier </fr>
+<tt><link href="https://raw.github.com/zoggy/odb-serv/master/INSTALL">INSTALL</link></tt>
 <en> file coming with the distribution archive.</en>
 <fr> inclus dans l'archive de distribution.</fr>
 </p>
