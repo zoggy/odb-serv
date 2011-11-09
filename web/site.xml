@@ -16,7 +16,7 @@
 <section name="main:whatis">
 <title><en>What is Odb-server ?</en><fr>Qu'est-ce que Odb-server ?</fr></title>
 <p>
-<en>Odb-server offers services to code editors and integrated development environments
+<en>Odb-server provides services to code editors and integrated development environments
 (IDEs) to get information about OCaml code being edited. In fact, Odb-server can
 be used to provide any service, but it was developped originally to make
 </en>
@@ -118,13 +118,13 @@ et des arguments, avec des arguments séparés par des blancs et les guillemets et
 </fr>
 </p>
 <p>
-<en>Communication with the server use a socket and a </en>
+<en>Communication with the server uses sockets and a </en>
 <fr>La communication avec le serveur se fait par l'intermédiaire d'un socket, et par un </fr>
 <local href="protocol"><en>textual protocol</en><fr>protocole textuel</fr></local>.
 </p>
 <p>
-<en>The basic server offers the "server" and "project" tools, each supporting various commands.
-But more tools can be added, in two ways:</en>
+<en>The basic server contains the "server" and "project" tools, each one supporting various commands.
+More tools can be added, in two ways:</en>
 <fr>Le serveur de base offre les outils "server" et "project", supportant chacun diverses commandes.
 Cependant, il peut être enrichi d'autres outils de deux façons:
 </fr>
@@ -132,14 +132,14 @@ Cependant, il peut être enrichi d'autres outils de deux façons:
 <ol>
 <li>
 <en> either with a plug-in given on the command-line when launching the server,</en>
-<fr> soit par un plug-in indiqué sur la ligne de commande de lancement du serveur,</fr>
+<fr> soit par un greffon indiqué sur la ligne de commande de lancement du serveur,</fr>
 </li>
 <li>
 <en> either by a secondary server connecting to the main server and
 indicating that it provides an additional tool, let's call it X.
 In this case, the main server acts as a proxy for the X tool:
 When the main server receives a query (1) concerning the X tool, it
-fowared the query to the secondary server (2) providing the services
+fowards the query to the secondary server (2) providing the services
 of this tool; the response obtained from the secondary server (3) is
 then forwarded to the client (4). The following figure illustrates this:
 </en>
@@ -161,7 +161,7 @@ then forwarded to the client (4). The following figure illustrates this:
 </ol>
 <p>
 <en>So a development environment could include various tools provided by a
-matin server and various secondary servers, each providing one or several tools.
+main server and several secondary servers, each providing one or several tools.
 The load of a secondary server would not block other secondary servers.
 </en>
 <fr>
@@ -190,7 +190,7 @@ des autres outils.
 &lt;command&gt;
 </pre>
 <p>
-<en>For example, to ask the contents of the </en>
+<en>For example, to retrieve the contents of the </en>
 <fr>Par exemple, pour demander le contenu de la variable </fr>
 <tt>includes</tt>
 <en> variable for the file </en>
@@ -289,7 +289,7 @@ les deux cas, on pourra ajouter un ou plusieurs nouveaux outils
 </fr>
 </p>
 <p>
-<en>the creation of a new server is quite simple; the code
+<en>The creation of a new server is quite simple; the code
 must perform the following actions:
 </en>
 <fr>La création d'un nouveau serveur est assez simple, le code

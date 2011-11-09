@@ -23,7 +23,7 @@ let run_ocamlwc file =
 ;;
 
 (** Define a function which will be associated to the "comments" command.
-  This function take options and command arguments. Options are not used
+  This function takes options and command arguments. Options are not used
   in this example. *)
 let show options args =
   if Array.length args < 1 then
