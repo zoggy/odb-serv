@@ -65,7 +65,7 @@ des services supplémentaires.
 <p>
 <en>Latest release is </en>
 <fr>La dernière version est </fr>
-<link href="http://forge.ocamlcore.org/frs/download.php/">0.1</link> (2011-11-09).
+<link href="https://forge.ocamlcore.org/frs/download.php/722/odb-server_0.1.tar.gz">0.1</link> (2011-11-09).
 </p>
 <p>
 <en>First release.</en><fr>Première distribution.</fr>
@@ -78,7 +78,7 @@ des services supplémentaires.
 <fr> inclus dans l'archive de distribution.</fr>
 </p>
 <p>
-<en>These are are required to compile Odb-server:</en>
+<en>These are required to compile Odb-server:</en>
 <fr>La compilation de Odb-server requiert:</fr>
 </p>
 <ul>
@@ -99,44 +99,77 @@ des services supplémentaires.
 </section>
 
 <section name="principle">
-<title>Principes</title>
+<title><en>Principles</en><fr>Principes</fr></title>
 <p>
-Il s'agit d'avoir un serveur auquel s'adresse l'éditeur ou l'IDE du développeur (emacs, chamo, vi, ...).
+<en>Odb-server is about having a server the developer's IDE (emacs, chamo, vi, ...)
+connects to. Each provided service is composed of a tool name (a string)
+and a command.</en>
+<fr>Il s'agit d'avoir un serveur auquel s'adresse l'éditeur ou l'IDE du développeur (emacs, chamo, vi, ...).
 Chaque service est composé d'un nom d'outil (une chaîne de caractères) et d'une commande.
+</fr>
 </p>
 <p>
-Les commandes sont de la même forme que les commandes shell, c'est-à-dire un nom de commande
+<en>Commands have the same form as shell commands, that is a command name
+followed by arguments, with these arguments separated by blanks; quotes can be used
+to specify an argument containing blanks.</en>
+<fr>Les commandes sont de la même forme que les commandes shell, c'est-à-dire un nom de commande
 et des arguments, avec des arguments séparés par des blancs et les guillemets et apostrophes pouvant
 être utilisés de la même façon que dans un shell pour spécifier un argument contenant des blancs.
+</fr>
 </p>
 <p>
-La communication avec le serveur se fait par l'intermédiaire d'un socket, et par un
-<local href="protocol">protocole textuel</local>.
+<en>Communication with the server use a socket and a </en>
+<fr>La communication avec le serveur se fait par l'intermédiaire d'un socket, et par un </fr>
+<local href="protocol"><en>textual protocol</en><fr>protocole textuel</fr></local>.
 </p>
 <p>
-Le serveur de base offre les outils "server" et "project", supportant chacun diverses commandes.
+<en>The basic server offers the "server" and "project" tools, each supporting various commands.
+But more tools can be added, in two ways:</en>
+<fr>Le serveur de base offre les outils "server" et "project", supportant chacun diverses commandes.
 Cependant, il peut être enrichi d'autres outils de deux façons:
+</fr>
 </p>
 <ol>
-<li> soit par un plug-in indiqué sur la ligne de commande de lancement du serveur,</li>
-<li> soit par un second serveur se connectant au serveur en lui signifiant qu'il offre un certain outil,
+<li>
+<en> either with a plug-in given on the command-line when launching the server,</en>
+<fr> soit par un plug-in indiqué sur la ligne de commande de lancement du serveur,</fr>
+</li>
+<li>
+<en> either by a secondary server connecting to the main server and
+indicating that it provides an additional tool, let's call it X.
+In this case, the main server acts as a proxy for the X tool:
+When the main server receives a query (1) concerning the X tool, it
+fowared the query to the secondary server (2) providing the services
+of this tool; the response obtained from the secondary server (3) is
+then forwarded to the client (4). The following figure illustrates this:
+</en>
+<fr> soit par un second serveur se connectant au serveur en lui signifiant qu'il offre un certain outil,
   disons X. Dans ce cas, le serveur principal est un proxy pour l'outil X:
   Lorsque le serveur principal recevra une requête (1) concernant l'outil
   X, il la redirigera vers le second serveur (2) offrant les services de cet outil,
   et la réponse obtenue (3) sera retransmise
   au client (4). La figure suivante illuste ce fonctionnement:
+</fr>
   <br/><br/>
   <img src="2servers.png" width="450" alt="" title="Example with 2 servers"/>
   <br/>
-  Le second serveur peut lui aussi effectuer des requêtes auprès du serveur principal; il
-  peut par exemple avoir besoin des informations du projet.
+  <en>The secondary server can also send queries to the main server, for example
+  to retrieve information about the project.</en>
+  <fr>Le second serveur peut lui aussi effectuer des requêtes auprès du serveur principal; il
+  peut par exemple avoir besoin des informations du projet.</fr>
 </li>
 </ol>
 <p>
+<en>So a development environment could include various tools provided by a
+matin server and various secondary servers, each providing one or several tools.
+The load of a secondary server would not block other secondary servers.
+</en>
+<fr>
 Un environnement de développement pourrait donc comporter plusieurs outils fournis par
 un serveur principal et différents serveurs secondaires, offrant chacun un ou plusieurs outils.
 L'intérêt étant que l'arrêt ou la charge d'un serveur secondaire ne provoque pas de blocage
 des autres outils.
+</fr>
 </p>
 <p class="center">
 <img src="4servers.png" width="300" alt="" title="Example with 4 servers"/>
@@ -146,141 +179,246 @@ des autres outils.
 <section name="protocol">
 <title><en>Protocol</en><fr>Protocole</fr></title>
 <p>
-Le protocole utilisé pour échanger requêtes et réponses est très simple.
+<en>The protocol used to exchange queries and responses is very simple.</en>
+<fr>Le protocole utilisé pour échanger requêtes et réponses est très simple.</fr>
 </p>
-<p>Les requêtes sont de la forme suivante:</p>
+<p>
+<en>Queries have the following form:</en>
+<fr>Les requêtes sont de la forme suivante:</fr>
+</p>
 <pre class="protocol">&lt;tool&gt; [options]
 &lt;command&gt;
 </pre>
 <p>
-Par exemple, pour demander le contenu de la variable <tt>includes</tt> pour le fichier
-<tt>/home/foo/test.ml</tt>, le client adressera la requête suivante au serveur,
-concernant l'outil <tt>project</tt>:
+<en>For example, to ask the contents of the </en>
+<fr>Par exemple, pour demander le contenu de la variable </fr>
+<tt>includes</tt>
+<en> variable for the file </en>
+<fr> pour le fichier </fr>
+<tt>/home/foo/test.ml</tt>,
+<en> the client will send the following query to the server, concerning the </en>
+<fr> le client adressera la requête suivante au serveur, concernant l'outil </fr>
+<tt>project</tt><fr>:</fr><en> tool:</en>
 </p>
 <pre class="protocol">project
 attribute "/home/foo/test.ml" includes
 </pre>
-<todo>Le format des options n'est pas encore spécifié.</todo>
-<p>Le format des réponses est aussi simple:</p>
+<todo>
+<en>The format of options is not yet specified.</en>
+<fr>Le format des options n'est pas encore spécifié.</fr>
+</todo>
+<p>
+<en>The format of the responses is as simple:</en>
+<fr>Le format des réponses est aussi simple:</fr></p>
 <pre class="protocol">
 &lt;tool&gt; &lt;code&gt; &lt;len&gt;
 &lt;contents
 eventually on
 more than one line, of length len&gt;
 </pre>
-<p>Voici par exemple la réponse possible à la requête ci-dessus:</p>
+<p>
+<en>Here is an exemple of possible response to the query above:</en>
+<fr>Voici par exemple la réponse possible à la requête ci-dessus:</fr></p>
 <pre class="protocol">
 project 0 12
 -I +lablgtk2
 </pre>
 <p>
-Le module <tt><link href="refdoc/Odb_comm.html">Odb_comm</link></tt> offre
-des fonctions pour construire, envoyer et recevoir des requêtes et des réponses.
+<en>The </en>
+<fr>Le module </fr>
+<tt><link href="refdoc/Odb_comm.html">Odb_comm</link></tt>
+<en> module provides functions bo create, send and receive queries and responses.</en>
+<fr> offre des fonctions pour construire, envoyer et recevoir des requêtes et des réponses.</fr>
 </p>
 </section>
 
 <section name="launching-server">
-<title>Lancement du serveur principal</title>
+<title>
+<en>Launching the main server</en>
+<fr>Lancement du serveur principal</fr></title>
 <p>
-Le serveur principal est lancé par la commande
-<tt class="shell">odb-server</tt> (ou <tt class="shell">odb-server.byte</tt>
-pour la version bytecode). Dans la suite, nous parlerons uniquement de la version
+<en>The main server is launched with the command </en>
+<fr>Le serveur principal est lancé par la commande </fr>
+<tt class="shell">odb-server</tt>
+<en> (or </en>
+<fr> (ou </fr>
+<tt class="shell">odb-server.byte</tt>
+<en> for the bytecode version). From now on, we will talk only about the
+native code version, but the correspondance of filenames for the bytecode
+version is obvious.</en>
+<fr> pour la version bytecode). Dans la suite, nous parlerons uniquement de la version
 compilée nativement, mais la correspondance des noms de fichiers pour la version
-bytecode est évidente.
+bytecode est évidente.</fr>
 </p>
-<p>Il est possible de charger des greffons au lancement du serveur. Ces greffons
-sont des fichiers objets OCaml. Ainsi, on pourra charger le greffon <tt>foo.cmxs</tt>
-de la manière suivante:
+<p>
+<en>It is possible to load plug-ins when launching the server. These plug-ins
+are OCaml object files. So the </en>
+<fr>Il est possible de charger des greffons au lancement du serveur. Ces greffons
+sont des fichiers objets OCaml. Ainsi, on pourra charger le greffon </fr>
+<tt>foo.cmxs</tt>
+<en> plug-in will be loaded the following way:</en>
+<fr> de la manière suivante:</fr>
 </p>
 <pre class="shell">
 # odb-server foo.cmxs &amp;
 </pre>
-<p>L'option <tt>-h</tt> donne la liste des options.</p>
+<p>
+<en>The </en>
+<fr>L'option </fr>
+<tt>-h</tt>
+<en> option prints the list of available options.</en>
+<fr> donne la liste des options.</fr>
+</p>
 </section>
 
 <section name="creating-server">
-<title>Création d'un autre serveur</title>
+<title>
+<en>Creating another server</en>
+<fr>Création d'un autre serveur</fr>
+</title>
 <p>
-On peut créer un autre serveur, soit pour le lancer en tant que serveur
+<en>One can create another server, either to launch it as a
+main server, or either to launch it as secondary server.
+In both cases, several tools can be added to provide more
+services to the client.
+</en>
+<fr>On peut créer un autre serveur, soit pour le lancer en tant que serveur
 principal, soit pour le lancer en tant que serveur secondaire. Dans
 les deux cas, on pourra ajouter un ou plusieurs nouveaux outils
 à offrir à l'éditeur client.
+</fr>
 </p>
-<p>La création d'un nouveau serveur est assez simple, le code
+<p>
+<en>the creation of a new server is quite simple; the code
+must perform the following actions:
+</en>
+<fr>La création d'un nouveau serveur est assez simple, le code
 doit faire les choses suivantes:
+</fr>
 </p>
 <ol>
-<li>Créer un ou plusieurs nouveaux outils (voir <local href="tool-creation">la
-section à ce sujet</local>),</li>
-<li>Dans le cas d'un serveur secondaire, enregistrer ce ou ces
-outils auprès du serveur principal, grâce à la fonction
-<tt><link href="refdoc/Odb_client.html#VALregister_to_server">Odb_client.register_to_server</link></tt>,</li>
-<li>Lancer la boucle d'attente des requêtes avec la fonction
+<li>
+<en>Create one or more tools (see </en>
+<fr>Créer un ou plusieurs nouveaux outils (voir </fr>
+<local href="tool-creation"><en>this section</en><fr>la section à ce sujet</fr></local>),</li>
+<li>
+<en>In the case of a secondary server, register this of these
+tools to the main server, using the function </en>
+<fr>Dans le cas d'un serveur secondaire, enregistrer ce ou ces
+outils auprès du serveur principal, grâce à la fonction </fr>
+<tt><link href="refdoc/Odb_client.html#VALregister_to_server">Odb_client.register_to_server</link></tt>,
+</li>
+<li>
+<en>Enter the loop handling queries with the function </en>
+<fr>Lancer la boucle d'attente des requêtes avec la fonction </fr>
 <tt><link href="refdoc/Odb_server.html#VALstart_server">Odb_server.start_server</link></tt>.</li>
 </ol>
 <p>
-Le <link href="http://git.ocamlcore.org/cgi-bin/gitweb.cgi?p=oug/oug.git;a=blob_plain;f=src/oug_server.ml;hb=HEAD">code du serveur de Oug</link> peut servir d'exemple.
+<en>The </en>
+<fr> Le </fr>
+<link href="http://git.ocamlcore.org/cgi-bin/gitweb.cgi?p=oug/oug.git;a=blob_plain;f=src/oug_server.ml;hb=HEAD">
+<en>code of the Oug server</en><fr>code du serveur de Oug</fr></link>
+<en> can be used as example.</en>
+<fr> peut servir d'exemple.</fr>
 </p>
 </section>
 
 <section name="available-tools">
-<title>Documentation des outils disponibles</title>
+<title>
+<en>Documentation of the available tools</en>
+<fr>Documentation des outils disponibles</fr></title>
 <p>
-Le serveur Odb-server de base fournit deux outils, "server" et "project".
+<en>The basic (Odb-)server provides two tools, "server" and "project".</en>
+<fr>Le serveur Odb-server de base fournit deux outils, "server" et "project".</fr>
 </p>
 <p>
-La commande "doc" de l'outil "server" génère une page HTML contenant la
+<en>The "doc" command of the "server" tool generates a HTML page
+containing the documentation of available commands for each tool.
+Each tool must provide a "doc" command returning the HTML fragment
+describing its commands. One will use functions of the </en>
+<fr>La commande "doc" de l'outil "server" génère une page HTML contenant la
 documentation des commandes disponibles pour chaque outil. Chaque outil
 doit fournir une commande "doc" renvoyant la partie de HTML décrivant ses
-commandes. On utilisera les fonctions du module
-<tt><link href="refdoc/Odb_doc.html">Odb_doc</link></tt> pour générer
+commandes. On utilisera les fonctions du module </fr>
+<tt><link href="refdoc/Odb_doc.html">Odb_doc</link></tt>
+<en> module to generate this documentation with correct format.
+The "doc" command of the "server" tool calls the "doc" command of
+each other tool and aggregates the results in a HTML page returned
+in the response. The page generated for the default tools is
+</en>
+<fr> pour générer
 cette documentation au bon format. La commande "doc" de l'outil "server"
 appelle la commande "doc" des autres outils disponibles et aggrège les
 résultats dans une page HTML renvoyée en réponse. On peut voir la
-page pour les outils par défaut <link href="tool_doc.html">ici</link>.
+page pour les outils par défaut </fr>
+<link href="tool_doc.html"><en>here</en><fr>ici</fr></link>.
 </p>
 <p>
-Cette page peut être facilment obtenu par la commande suivante, consistant
-à lancer le server et à utiliser le client <tt>odb-client</tt> pour obtenir la
-page de documentation et la rediriger dans un fichier:
+<en>This page can easily be obtained with the following command,
+which launches the server and uses the client program </en>
+<fr>Cette page peut être facilement obtenue par la commande suivante, consistant
+à lancer le server et à utiliser le client </fr>
+<tt>odb-client</tt>
+<en> to retrieve the documentation page, redirected into a file:</en>
+<fr> pour obtenir la page de documentation et la rediriger dans un fichier:
+</fr>
 </p>
 <pre class="shell">
 # odb-server &amp;
 # odb-client "server: doc" &gt; foo.html
 </pre>
+
 <section name="tools:project">
-<title>L'outil "project"</title>
+<title>
+<en>The "project" tool</en>
+<fr>L'outil "project"</fr></title>
 <p>
-L'outil "project" utilise un fichier de description de projet pour
+<en>The "project" tool uses a project description file to know
+the source files and the compilation options associated to each file.
+An example of such a file is </en>
+<fr>L'outil "project" utilise un fichier de description de projet pour
 connaître les fichiers sources et les options de compilation associées.
-Un exemple d'un tel fichier se trouve <a href="project.txt">ici</a>.
+Un exemple d'un tel fichier se trouve </fr>
+<link href="project.txt"><en>here</en><fr>ici</fr></link>.
 </p>
 </section>
 </section>
 
 <section name="tool-creation">
-<title>Création d'un outil</title>
-<!--The distribution includes a toy tool called "ocamlwc" usable as a starting base
-to create your own tools.-->
+<title><en>Creating a tool</en><fr>Création d'un outil</fr></title>
 <p>
-La distribution inclus un outil jouet comme base à partir de laquelle on
-peut développer ses propres outils.
+<en>The distribution includes a toy tool called "ocamlwc" usable as a starting base
+to create your own tools.</en>
+<fr>La distribution inclus un outil jouet "ocamlwc" comme base à partir de laquelle on
+peut développer ses propres outils.</fr>
 </p>
-<p>Le code est <a href="ocamlwc.html">ici</a>.</p>
-<p>Pour compiler:
+<p>
+<en>The code is </en>
+<fr>Le code est </fr><link href="ocamlwc.html"><en>here</en><fr>ici</fr></link>.</p>
+<p>
+<en>To compile: </en>
+<fr>Pour compiler:</fr>
 </p>
 <pre class="shell">
 # ocamlopt -g -shared -o ocamlwc.cmxs -thread ocamlwc.ml
 </pre>
-<p>Pour tester, on lance le serveur en lui donnant le greffon à charger
-sur la ligne de commande:</p>
+<p>
+<en>To test, we launch the server by giving on the command line the plug-in to load:</en>
+<fr>Pour tester, on lance le serveur en lui donnant le greffon à charger
+sur la ligne de commande:</fr>
+</p>
 <pre class="shell">
 # odb-server ocamlwc.cmxs &amp;
 </pre>
-<p>Pour tester, on peut utiliser le client de test. La première
+<p>
+<en>Then, we can use the client to test. The first command calls
+the "comments" command of the "ocamlwc" tools on the "ocamlwc.ml" file.
+The second one generates the documentation of the available tools:
+</en>
+<fr>Ensuite, on peut utiliser le client de test. La première
 commande appelle la commande "comments" de l'outil "ocamlwc" sur le
 fichier "ocamlwc.ml". La seconde fait générer la documentation des outils
-disponibles:
+disponibles:</fr>
 </p>
 <pre class="shell">
 # ./odb-client "ocamlwc: comments ocamlwc.ml"
@@ -289,8 +427,11 @@ response header: ocamlwc 0 1
 # ./odb-client "server: doc" > /tmp/t.html
 </pre>
 <p>
-Le module <tt><link href="refdoc/Odb_tools.html">Odb_tools</link></tt>
-contient la définition des outils, les fonctions d'enregistrement, ...
+<en>The </en>
+<fr>Le module </fr>
+<tt><link href="refdoc/Odb_tools.html">Odb_tools</link></tt>
+<en> module contains the definition of tools, registration functions, ...</en>
+<fr> contient la définition des outils, les fonctions d'enregistrement, ...</fr>
 </p>
 </section>
 
